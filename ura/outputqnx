@@ -1,0 +1,275 @@
+maxc = 3371 for intervals between 9e+06 and 9.00301e+06
+called getcount() 26 times
+maxc = 3372 for intervals between 9.00301e+06 and 9.0112e+06
+called getcount() 22 times
+maxc = 3373 for intervals between 9.0112e+06 and 9.01939e+06
+called getcount() 28 times
+maxc = 3374 for intervals between 9.01939e+06 and 9.01939e+06
+called getcount() 20 times
+maxc = 3377 for intervals between 9.01939e+06 and 9.02758e+06
+called getcount() 27 times
+maxc = 3378 for intervals between 9.02758e+06 and 9.02758e+06
+called getcount() 20 times
+maxc = 3381 for intervals between 9.02758e+06 and 9.03578e+06
+called getcount() 24 times
+maxc = 3382 for intervals between 9.03578e+06 and 9.03578e+06
+called getcount() 20 times
+maxc = 3385 for intervals between 9.03578e+06 and 9.04397e+06
+called getcount() 27 times
+maxc = 3386 for intervals between 9.04397e+06 and 9.04397e+06
+called getcount() 20 times
+maxc = 3389 for intervals between 9.04397e+06 and 9.05216e+06
+called getcount() 22 times
+maxc = 3390 for intervals between 9.05216e+06 and 9.05216e+06
+called getcount() 20 times
+maxc = 3393 for intervals between 9.05216e+06 and 9.06035e+06
+called getcount() 28 times
+maxc = 3394 for intervals between 9.06035e+06 and 9.06035e+06
+called getcount() 20 times
+maxc = 3397 for intervals between 9.06035e+06 and 9.06854e+06
+called getcount() 28 times
+maxc = 3398 for intervals between 9.06854e+06 and 9.06854e+06
+called getcount() 20 times
+maxc = 3401 for intervals between 9.06854e+06 and 9.07674e+06
+called getcount() 24 times
+maxc = 3402 for intervals between 9.07674e+06 and 9.07674e+06
+called getcount() 20 times
+maxc = 3405 for intervals between 9.07674e+06 and 9.08493e+06
+called getcount() 22 times
+maxc = 3406 for intervals between 9.08493e+06 and 9.08493e+06
+called getcount() 20 times
+maxc = 3410 for intervals between 9.08493e+06 and 9.09312e+06
+called getcount() 27 times
+maxc = 3411 for intervals between 9.09312e+06 and 9.09312e+06
+called getcount() 20 times
+maxc = 3414 for intervals between 9.09312e+06 and 9.10131e+06
+called getcount() 30 times
+maxc = 3415 for intervals between 9.10131e+06 and 9.10131e+06
+called getcount() 20 times
+maxc = 3418 for intervals between 9.10131e+06 and 9.1095e+06
+called getcount() 27 times
+maxc = 3419 for intervals between 9.1095e+06 and 9.1095e+06
+called getcount() 20 times
+maxc = 3422 for intervals between 9.1095e+06 and 9.1177e+06
+called getcount() 29 times
+maxc = 3423 for intervals between 9.1177e+06 and 9.1177e+06
+called getcount() 20 times
+maxc = 3426 for intervals between 9.1177e+06 and 9.12589e+06
+called getcount() 26 times
+maxc = 3427 for intervals between 9.12589e+06 and 9.12589e+06
+called getcount() 20 times
+maxc = 3430 for intervals between 9.12589e+06 and 9.13408e+06
+called getcount() 27 times
+maxc = 3431 for intervals between 9.13408e+06 and 9.13408e+06
+called getcount() 20 times
+maxc = 3434 for intervals between 9.13408e+06 and 9.14227e+06
+called getcount() 19 times
+maxc = 3435 for intervals between 9.14227e+06 and 9.14227e+06
+called getcount() 20 times
+maxc = 3438 for intervals between 9.14227e+06 and 9.15046e+06
+called getcount() 29 times
+maxc = 3439 for intervals between 9.15046e+06 and 9.15046e+06
+called getcount() 20 times
+maxc = 3442 for intervals between 9.15046e+06 and 9.15866e+06
+called getcount() 31 times
+maxc = 3443 for intervals between 9.15866e+06 and 9.15866e+06
+called getcount() 20 times
+maxc = 3446 for intervals between 9.15866e+06 and 9.16685e+06
+called getcount() 28 times
+maxc = 3447 for intervals between 9.16685e+06 and 9.16685e+06
+called getcount() 20 times
+maxc = 3450 for intervals between 9.16685e+06 and 9.17504e+06
+called getcount() 25 times
+maxc = 3451 for intervals between 9.17504e+06 and 9.17504e+06
+called getcount() 20 times
+maxc = 3453 for intervals between 9.17504e+06 and 9.18323e+06
+called getcount() 27 times
+maxc = 3454 for intervals between 9.18323e+06 and 9.18323e+06
+called getcount() 20 times
+maxc = 3455 for intervals between 9.18323e+06 and 9.19142e+06
+called getcount() 23 times
+maxc = 3456 for intervals between 9.19142e+06 and 9.19142e+06
+called getcount() 20 times
+maxc = 3457 for intervals between 9.19142e+06 and 9.19962e+06
+called getcount() 30 times
+maxc = 3458 for intervals between 9.19962e+06 and 9.19962e+06
+called getcount() 20 times
+maxc = 3459 for intervals between 9.19962e+06 and 9.20781e+06
+called getcount() 26 times
+maxc = 3460 for intervals between 9.20781e+06 and 9.20781e+06
+called getcount() 20 times
+maxc = 3461 for intervals between 9.20781e+06 and 9.216e+06
+called getcount() 27 times
+maxc = 3462 for intervals between 9.216e+06 and 9.216e+06
+called getcount() 20 times
+maxc = 3463 for intervals between 9.216e+06 and 9.22419e+06
+called getcount() 25 times
+maxc = 3464 for intervals between 9.22419e+06 and 9.22419e+06
+called getcount() 20 times
+maxc = 3466 for intervals between 9.22419e+06 and 9.23238e+06
+called getcount() 30 times
+maxc = 3467 for intervals between 9.23238e+06 and 9.23238e+06
+called getcount() 20 times
+maxc = 3468 for intervals between 9.23238e+06 and 9.24058e+06
+called getcount() 26 times
+maxc = 3469 for intervals between 9.24058e+06 and 9.24058e+06
+called getcount() 20 times
+maxc = 3470 for intervals between 9.24058e+06 and 9.24877e+06
+called getcount() 28 times
+maxc = 3471 for intervals between 9.24877e+06 and 9.24877e+06
+called getcount() 20 times
+maxc = 3472 for intervals between 9.24877e+06 and 9.29792e+06
+called getcount() 13 times
+maxc = 3473 for intervals between 9.29792e+06 and 9.30611e+06
+called getcount() 28 times
+maxc = 3475 for intervals between 9.30611e+06 and 9.3143e+06
+called getcount() 26 times
+maxc = 3476 for intervals between 9.3143e+06 and 9.3143e+06
+called getcount() 20 times
+maxc = 3477 for intervals between 9.3143e+06 and 9.3225e+06
+called getcount() 25 times
+maxc = 3478 for intervals between 9.3225e+06 and 9.3225e+06
+called getcount() 20 times
+maxc = 3479 for intervals between 9.3225e+06 and 9.36346e+06
+called getcount() 29 times
+maxc = 3480 for intervals between 9.36346e+06 and 9.37165e+06
+called getcount() 28 times
+maxc = 3481 for intervals between 9.37165e+06 and 9.37165e+06
+called getcount() 20 times
+maxc = 3482 for intervals between 9.37165e+06 and 9.37984e+06
+called getcount() 28 times
+maxc = 3483 for intervals between 9.37984e+06 and 9.37984e+06
+called getcount() 20 times
+maxc = 3484 for intervals between 9.37984e+06 and 9.38803e+06
+called getcount() 25 times
+maxc = 3485 for intervals between 9.38803e+06 and 9.42899e+06
+called getcount() 25 times
+maxc = 3486 for intervals between 9.42899e+06 and 9.46995e+06
+called getcount() 27 times
+maxc = 3487 for intervals between 9.46995e+06 and 9.47814e+06
+called getcount() 29 times
+maxc = 3488 for intervals between 9.47814e+06 and 9.47814e+06
+called getcount() 19 times
+maxc = 3490 for intervals between 9.47814e+06 and 9.48634e+06
+called getcount() 23 times
+maxc = 3491 for intervals between 9.48634e+06 and 9.49453e+06
+called getcount() 24 times
+maxc = 3492 for intervals between 9.49453e+06 and 9.54368e+06
+called getcount() 27 times
+maxc = 3493 for intervals between 9.54368e+06 and 9.56826e+06
+called getcount() 28 times
+maxc = 3494 for intervals between 9.56826e+06 and 9.56826e+06
+called getcount() 19 times
+maxc = 3496 for intervals between 9.56826e+06 and 9.57645e+06
+called getcount() 25 times
+maxc = 3497 for intervals between 9.57645e+06 and 9.57645e+06
+called getcount() 19 times
+maxc = 3498 for intervals between 9.57645e+06 and 9.58464e+06
+called getcount() 25 times
+maxc = 3499 for intervals between 9.58464e+06 and 9.58464e+06
+called getcount() 19 times
+maxc = 3500 for intervals between 9.58464e+06 and 9.61741e+06
+called getcount() 24 times
+maxc = 3501 for intervals between 9.61741e+06 and 9.6256e+06
+called getcount() 27 times
+maxc = 3502 for intervals between 9.6256e+06 and 9.67475e+06
+called getcount() 25 times
+maxc = 3503 for intervals between 9.67475e+06 and 9.67475e+06
+called getcount() 19 times
+maxc = 3504 for intervals between 9.67475e+06 and 9.68294e+06
+called getcount() 27 times
+maxc = 3505 for intervals between 9.68294e+06 and 9.68294e+06
+called getcount() 19 times
+maxc = 3506 for intervals between 9.68294e+06 and 9.69114e+06
+called getcount() 23 times
+maxc = 3507 for intervals between 9.69114e+06 and 9.69114e+06
+called getcount() 19 times
+maxc = 3508 for intervals between 9.69114e+06 and 9.7321e+06
+called getcount() 27 times
+maxc = 3509 for intervals between 9.7321e+06 and 9.74029e+06
+called getcount() 28 times
+maxc = 3510 for intervals between 9.74029e+06 and 9.74029e+06
+called getcount() 18 times
+maxc = 3511 for intervals between 9.74029e+06 and 9.74848e+06
+called getcount() 23 times
+maxc = 3512 for intervals between 9.74848e+06 and 9.74848e+06
+called getcount() 18 times
+maxc = 3513 for intervals between 9.74848e+06 and 9.75667e+06
+called getcount() 23 times
+maxc = 3514 for intervals between 9.75667e+06 and 9.80582e+06
+called getcount() 24 times
+maxc = 3515 for intervals between 9.80582e+06 and 9.85498e+06
+called getcount() 22 times
+maxc = 3516 for intervals between 9.85498e+06 and 9.85498e+06
+called getcount() 18 times
+maxc = 3519 for intervals between 9.85498e+06 and 9.86317e+06
+called getcount() 26 times
+maxc = 3520 for intervals between 9.86317e+06 and 9.86317e+06
+called getcount() 18 times
+maxc = 3523 for intervals between 9.86317e+06 and 9.87136e+06
+called getcount() 25 times
+maxc = 3524 for intervals between 9.87136e+06 and 9.87136e+06
+called getcount() 17 times
+maxc = 3527 for intervals between 9.87136e+06 and 9.87955e+06
+called getcount() 22 times
+maxc = 3528 for intervals between 9.87955e+06 and 9.87955e+06
+called getcount() 17 times
+maxc = 3532 for intervals between 9.87955e+06 and 9.88774e+06
+called getcount() 23 times
+maxc = 3533 for intervals between 9.88774e+06 and 9.88774e+06
+called getcount() 17 times
+maxc = 3536 for intervals between 9.88774e+06 and 9.89594e+06
+called getcount() 25 times
+maxc = 3537 for intervals between 9.89594e+06 and 9.89594e+06
+called getcount() 17 times
+maxc = 3540 for intervals between 9.89594e+06 and 9.90413e+06
+called getcount() 20 times
+maxc = 3541 for intervals between 9.90413e+06 and 9.90413e+06
+called getcount() 17 times
+maxc = 3543 for intervals between 9.90413e+06 and 9.91232e+06
+called getcount() 17 times
+maxc = 3545 for intervals between 9.91232e+06 and 9.92051e+06
+called getcount() 26 times
+maxc = 3547 for intervals between 9.92051e+06 and 9.9287e+06
+called getcount() 21 times
+maxc = 3549 for intervals between 9.9287e+06 and 9.9369e+06
+called getcount() 23 times
+maxc = 3552 for intervals between 9.9369e+06 and 9.94509e+06
+called getcount() 23 times
+maxc = 3553 for intervals between 9.94509e+06 and 9.94509e+06
+called getcount() 16 times
+maxc = 3556 for intervals between 9.94509e+06 and 9.95328e+06
+called getcount() 17 times
+maxc = 3557 for intervals between 9.95328e+06 and 9.95328e+06
+called getcount() 16 times
+maxc = 3560 for intervals between 9.95328e+06 and 9.96147e+06
+called getcount() 24 times
+maxc = 3561 for intervals between 9.96147e+06 and 9.96147e+06
+called getcount() 16 times
+maxc = 3564 for intervals between 9.96147e+06 and 9.96966e+06
+called getcount() 24 times
+maxc = 3565 for intervals between 9.96966e+06 and 9.96966e+06
+called getcount() 15 times
+maxc = 3568 for intervals between 9.96966e+06 and 9.97786e+06
+called getcount() 15 times
+maxc = 3569 for intervals between 9.97786e+06 and 9.97786e+06
+called getcount() 15 times
+maxc = 3572 for intervals between 9.97786e+06 and 9.98605e+06
+called getcount() 24 times
+maxc = 3573 for intervals between 9.98605e+06 and 9.98605e+06
+called getcount() 14 times
+maxc = 3574 for intervals between 9.98605e+06 and 9.99424e+06
+called getcount() 21 times
+maxc = 3575 for intervals between 9.99424e+06 and 9.99424e+06
+called getcount() 13 times
+maxc = 3578 for intervals between 9.99424e+06 and 1e+07
+called getcount() 0 times
+
+minc = 32 for intervals between 9e+06 and 9.0112e+06
+called getcount() 31 times
+minc = 36 for intervals between 9.0112e+06 and 1e+07
+called getcount() 0 times
+
+Duration: 244.405
+total number of getcount(): 2988
+time spent per getcount(): 0.0817957
