@@ -33,7 +33,7 @@ amd:
 	rm -f *.o
 
 clean:
-	rm -f *.o $(EXEC)
+	rm -f *.o $(EXEC) *output*
 
 cleanbin:
 	rm -f snapshot* image*
