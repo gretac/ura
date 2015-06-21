@@ -17,12 +17,11 @@ typedef struct step {
 	float right;
 } step;
 
-vector<float> e;
-float *floatevents;
+ofstream stream;
 vector<step>max_vec, min_vec;
 float max_event, maxc, minc, prev_minc, next_max, next_min, getcount = 0, totalcount = 0;
 
-void get_min(float invl, bool enable){
+void get_min(vector<float> &e, float invl, bool enable){
 	getcount++;
 	float upper = 0;
 	minc = e.size();
@@ -51,7 +50,7 @@ void get_min(float invl, bool enable){
 			else
 				ldiff = e[lower] - e[lower - 1];  // how far to get to next lower event
 		}
-		//cout << "ldiff " << ldiff << " udiff " << udiff << endl;
+		//stream << "ldiff " << ldiff << " udiff " << udiff << endl;
 		if(udiff < ldiff){
 			upper++;
 			ldiff -= udiff;
@@ -82,7 +81,7 @@ void get_min(float invl, bool enable){
 	prev_minc = minc;
 }
 
-void get_counts(float invl){
+void get_counts(vector<float> &e, float invl){
 	getcount++;
 	minc = e.size();
 	maxc = 0;
@@ -119,7 +118,7 @@ void get_counts(float invl){
 			else
 				ldiff = e[lower] - e[lower - 1];  // how far to get to next lower event
 		}
-		//cout << "ldiff " << ldiff << " udiff " << udiff << endl;
+		//stream << "ldiff " << ldiff << " udiff " << udiff << endl;
 		if(udiff < ldiff){
 			upper++;
 			ldiff -= udiff;
@@ -149,38 +148,90 @@ void get_counts(float invl){
 	}	
 }
 
-float bin_max_steps(float lower, float upper, float curr){
+float bin_max_steps(vector<float> &e, float lower, float upper, float curr){
 	long long mid = (lower + upper) / 2;
-	get_counts((float)mid);
+	get_counts(e, (float)mid);
 	if(maxc == curr){
-		get_counts(mid + 1);
+		get_counts(e, mid + 1);
 		if(maxc > curr){
 			next_max = maxc;
 			return mid;
 		} else {
-			return bin_max_steps(mid + 1, upper, curr);
+			return bin_max_steps(e, mid + 1, upper, curr);
 		}
 	} else {
-		return bin_max_steps(lower, mid - 1, curr);
+		return bin_max_steps(e, lower, mid - 1, curr);
 	}
 }
 
-float bin_min_steps(float lower, float upper, float curr, bool enable){
+float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool enable){
 	long long mid = (lower + upper) / 2;
-	get_min((float)mid, enable);
+	get_min(e, (float)mid, enable);
 	if(minc == curr){
-		get_min(mid + 1, enable);
+		get_min(e, mid + 1, enable);
 		if(minc > curr){
 			next_min = minc;
 			return mid;
 		} else {
-			return bin_min_steps(mid + 1, upper, curr, true);
+			return bin_min_steps(e, mid + 1, upper, curr, true);
 		}
 	} else {
-		return bin_min_steps(lower, mid - 1, curr, false);
+		return bin_min_steps(e, lower, mid - 1, curr, false);
 	}
 }
 
+void computer_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size){
+	float curr = min_windows_size, last = max_windows_size;
+	get_counts(e, last);
+	float last_max = maxc, last_min = minc;
+	get_counts(e, curr);
+	float curr_max = maxc, curr_min = minc, next;
+	step s;
+	while(curr_max != last_max){
+		next = bin_max_steps(e, curr, last, curr_max);		
+		stream << "maxc = " << curr_max << " for intervals between " << curr << " and " << next << endl;
+		stream << "called getcount() " << getcount << " times" << endl;
+		totalcount += getcount;
+		getcount = 0;
+		s.events = curr_max;
+		s.left = curr;
+		s.right = next;
+		max_vec.push_back(s);
+		curr = next + 1;
+		curr_max = next_max;
+	}
+	stream << "maxc = " << curr_max << " for intervals between " << curr << " and " << last << endl;
+	stream << "called getcount() " << getcount << " times" << endl << endl;
+	totalcount += getcount;
+	getcount = 0;
+	s.events = curr_max;
+	s.left = curr;
+	s.right = last;
+	max_vec.push_back(s);
+		
+	curr = min_windows_size;
+	while(curr_min != last_min){
+		next = bin_min_steps(e, curr, last, curr_min, false);
+		stream << "minc = " << curr_min << " for intervals between " << curr << " and " << next << endl;
+		stream << "called getcount() " << getcount << " times" << endl;
+		totalcount += getcount;
+		getcount = 0;
+		s.events = curr_min;
+		s.left = curr;
+		s.right = next;
+		min_vec.push_back(s);
+		curr = next + 1;
+		curr_min = next_min;
+	}
+	stream << "minc = " << curr_min << " for intervals between " << curr << " and " << last << endl;
+	stream << "called getcount() " << getcount << " times" << endl << endl;
+	totalcount += getcount;
+	getcount = 0;
+	s.events = curr_min;
+	s.left = curr;
+	s.right = last;
+	min_vec.push_back(s);
+}
 
 int main(int argc, char *argv[]){
 	if ( argc != 5 || atoll(argv[1]) <= 0 || atoll(argv[2]) <= atoll(argv[1]) ){
@@ -195,80 +246,27 @@ int main(int argc, char *argv[]){
 		cout << "input file does not exist!\n";
 		return 0;
 	}
+	//this is the code of setting up vector events.
+	vector<float> e;
 	while (std::getline(infile, line)) {
 		istringstream iss(line);
 		if (!(iss >> tmp)) break; // error
 		e.push_back(stof(tmp));
 	}
 	infile.close();
-	ofstream cout;
-	cout.open(argv[4]);
+	stream.open(argv[4]);
 	max_event = e[e.size() - 1];
 	if(atoll(argv[2]) > max_event){
 		cout << "[maximum interval] is larger than the max event time. Exiting...\n";
 		return 0;
 	}
-	floatevents = new float[e.size()];
-	long c = 0;
-	for(auto it = e.begin(); it != e.end(); ++it){
-		floatevents[c] = *it;
-	}
-
-	float curr = atoll(argv[1]), last = atoll(argv[2]);
-	get_counts(last);
-	float last_max = maxc, last_min = minc;
-	get_counts(curr);
-	float curr_max = maxc, curr_min = minc, next;
-	step s;
-	while(curr_max != last_max){
-		next = bin_max_steps(curr, last, curr_max);		
-		cout << "maxc = " << curr_max << " for intervals between " << curr << " and " << next << endl;
-		cout << "called getcount() " << getcount << " times" << endl;
-		totalcount += getcount;
-		getcount = 0;
-		s.events = curr_max;
-		s.left = curr;
-		s.right = next;
-		max_vec.push_back(s);
-		curr = next + 1;
-		curr_max = next_max;
-	}
-	cout << "maxc = " << curr_max << " for intervals between " << curr << " and " << last << endl;
-	cout << "called getcount() " << getcount << " times" << endl << endl;
-	totalcount += getcount;
-	getcount = 0;
-	s.events = curr_max;
-	s.left = curr;
-	s.right = last;
-	max_vec.push_back(s);
-		
-	curr = atoll(argv[1]);
-	while(curr_min != last_min){
-		next = bin_min_steps(curr, last, curr_min, false);
-		cout << "minc = " << curr_min << " for intervals between " << curr << " and " << next << endl;
-		cout << "called getcount() " << getcount << " times" << endl;
-		totalcount += getcount;
-		getcount = 0;
-		s.events = curr_min;
-		s.left = curr;
-		s.right = next;
-		min_vec.push_back(s);
-		curr = next + 1;
-		curr_min = next_min;
-	}
-	cout << "minc = " << curr_min << " for intervals between " << curr << " and " << last << endl;
-	cout << "called getcount() " << getcount << " times" << endl << endl;
-	totalcount += getcount;
-	getcount = 0;
-	s.events = curr_min;
-	s.left = curr;
-	s.right = last;
-	min_vec.push_back(s);
+	computer_arrival_curve(e, stof(argv[1]), stof(argv[2]));
+	
 	long double duration = (long double) (std::clock() - start) / CLOCKS_PER_SEC;
-	cout << "Duration: " << duration << endl;
-	cout << "total number of getcount(): " << totalcount << endl;
-	cout << "time spent per getcount(): " << duration / totalcount << endl;
-	cout.close();
+	stream << "Duration: " << duration << endl;
+	stream << "total number of getcount(): " << totalcount << endl;
+	stream << "time spent per getcount(): " << duration / totalcount << endl;
+	stream.close();
         return 0;
     
 }
