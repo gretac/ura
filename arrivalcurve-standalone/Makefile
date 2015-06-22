@@ -9,14 +9,14 @@ UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 INCL_P  = -I$(HOME)/inc -I/usr/local/cuda/include
 LIBS   = -lm -lrt
-INCL_AMD = -I$(HOME)/inc -I/opt/AMDAPP/include 
+INCL_AMD = -I$(HOME)/inc -I/opt/AMDAPP/include
 LIBS_AMD = -L/opt/AMDAPP/lib/x86_64 $(LIBS)
-CFLAGS_AMD  = $(CFLAGS) -DATI_OS_LINUX 
+CFLAGS_AMD  = $(CFLAGS) -DATI_OS_LINUX
 endif
 ifeq ($(UNAME), Darwin)
 INCL_P   = -I$(HOME)/inc
 LIBS     = -framework OpenCL
-INCL_AMD = $(INCL_P) 
+INCL_AMD = $(INCL_P)
 LIBS_AMD = $(LIBS)
 CFLAGS_AMD = $(CFLAGS)
 endif
@@ -28,7 +28,7 @@ all:
 
 amd:
 
-	$(CC) $(CFLAGS_AMD) -c $(SRC) $(INCL_AMD) 
+	$(CC) $(CFLAGS_AMD) -c $(SRC) $(INCL_AMD)
 	$(CC) $(CFLAGS) *.o -o $(EXEC) $(LIBS_AMD)
 	rm -f *.o
 
