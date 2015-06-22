@@ -18,7 +18,6 @@ typedef struct step {
 } step;
 
 ofstream stream;
-vector<step>max_vec, min_vec;
 float max_event, maxc, minc, prev_minc, next_max, next_min, getcount = 0, totalcount = 0;
 
 void get_min(vector<float> &e, float invl, bool enable){
@@ -180,7 +179,7 @@ float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool
 	}
 }
 
-void computer_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size){
+void computer_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, vector<step> &max_vec, vector<step> &min_vec){
 	float curr = min_windows_size, last = max_windows_size;
 	get_counts(e, last);
 	float last_max = maxc, last_min = minc;
@@ -248,6 +247,7 @@ int main(int argc, char *argv[]){
 	}
 	//this is the code of setting up vector events.
 	vector<float> e;
+	vector<step> max_vec, min_vec;
 	while (std::getline(infile, line)) {
 		istringstream iss(line);
 		if (!(iss >> tmp)) break; // error
@@ -255,12 +255,12 @@ int main(int argc, char *argv[]){
 	}
 	infile.close();
 	stream.open(argv[4]);
-	max_event = e[e.size() - 1];
+	max_event = e[e.size() - 1]; //this is part of error checking before calling computer_arrival_curve	
 	if(atoll(argv[2]) > max_event){
 		cout << "[maximum interval] is larger than the max event time. Exiting...\n";
 		return 0;
 	}
-	computer_arrival_curve(e, stof(argv[1]), stof(argv[2]));
+	computer_arrival_curve(e, stof(argv[1]), stof(argv[2]), max_vec, min_vec);
 	
 	long double duration = (long double) (std::clock() - start) / CLOCKS_PER_SEC;
 	stream << "Duration: " << duration << endl;
