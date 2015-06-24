@@ -1,6 +1,7 @@
 HOME    = $(PWD)
 EXEC    = $(HOME)/main
 CC      = g++
+AC = arrival_curve.cpp
 SRC = main.cpp
 CFLAGS  = -Wall -Wextra -pedantic -O3 -std=c++11
 
@@ -22,8 +23,8 @@ CFLAGS_AMD = $(CFLAGS)
 endif
 
 all:
-	$(CC) $(CFLAGS) $(INCL_P) -c $(SRC)
-	$(CC) $(CFLAGS) *.o -o $(EXEC) $(LIBS)
+	$(CC) $(CFLAGS) $(INCL_P) -c $(AC)
+	$(CC) $(CFLAGS) *.o -o $(EXEC) $(SRC)
 	rm -f *.o
 
 amd:

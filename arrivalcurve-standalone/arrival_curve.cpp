@@ -6,7 +6,6 @@
 #include <fstream>
 #include <sstream>
 #include <sys/stat.h>
-
 #include "arrival_curve.h"
 
 using namespace std;
@@ -173,55 +172,43 @@ float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool
         }
 }
 
-void computer_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, vector<step> &max_vec, vector<step> &min_vec){
+float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, float max_event_param, vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
+	max_event = max_event_param;
         float curr = min_windows_size, last = max_windows_size;
         get_counts(e, last);
         float last_max = maxc, last_min = minc;
         get_counts(e, curr);
         float curr_max = maxc, curr_min = minc, next;
-        step s;
         while(curr_max != last_max){
-                next = bin_max_steps(e, curr, last, curr_max);
-                stream << "maxc = " << curr_max << " for intervals between " << curr << " and " << next << endl;
-                stream << "called getcount() " << getcount << " times" << endl;
+                next = bin_max_steps(e, curr, last, curr_max);              
                 totalcount += getcount;
                 getcount = 0;
-                s.events = curr_max;
-                s.left = curr;
-                s.right = next;
-                max_vec.push_back(s);
+                max_events.push_back(curr_max);
+		max_left.push_back(curr);
+		max_right.push_back(next);
                 curr = next + 1;
                 curr_max = next_max;
         }
-        stream << "maxc = " << curr_max << " for intervals between " << curr << " and " << last << endl;
-        stream << "called getcount() " << getcount << " times" << endl << endl;
         totalcount += getcount;
         getcount = 0;
-        s.events = curr_max;
-        s.left = curr;
-        s.right = last;
-        max_vec.push_back(s);
-
+	max_events.push_back(curr_max);
+	max_left.push_back(curr);
+	max_right.push_back(last);
         curr = min_windows_size;
         while(curr_min != last_min){
                 next = bin_min_steps(e, curr, last, curr_min, false);
-                stream << "minc = " << curr_min << " for intervals between " << curr << " and " << next << endl;
-                stream << "called getcount() " << getcount << " times" << endl;
                 totalcount += getcount;
                 getcount = 0;
-                s.events = curr_min;
-                s.left = curr;
-                s.right = next;
-                min_vec.push_back(s);
+                min_events.push_back(curr_min);
+		min_left.push_back(curr);
+		min_right.push_back(next);
                 curr = next + 1;
                 curr_min = next_min;
         }
-        stream << "minc = " << curr_min << " for intervals between " << curr << " and " << last << endl;
-        stream << "called getcount() " << getcount << " times" << endl << endl;
         totalcount += getcount;
         getcount = 0;
-        s.events = curr_min;
-        s.left = curr;
-        s.right = last;
-        min_vec.push_back(s);
+        min_events.push_back(curr_min);
+	min_left.push_back(curr);
+	min_right.push_back(last);
+	return totalcount;
 }
