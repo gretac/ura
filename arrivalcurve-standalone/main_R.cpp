@@ -1,27 +1,25 @@
 #include<Rcpp.h>
-using namespace Rcpp;
 
-#include "arrival_curve.c"
+#include "arrival_curve.h"
 
+using namespace std;
 
-int bla(int i) {
-  return i+5;
-}
-
-
-Rcpp::List computer_arrival_curve_rwrapper(Rcpp::NumericVector e, float min_window_size, float max_window_size) {
-   vector<step> max_vec, min_vec;
+// [[Rcpp::export]]
+Rcpp::List computer_arrival_curve_rwrapper(Rcpp::NumericVector e, float max_event, float min_window_size, float max_window_size) {
 
    vector<float> ex = Rcpp::as<std::vector<float> >(e);
-  
-//   computer_arrival_curve(ex, min_window_size, max_window_size, max_vec, min_vec);
+
+   vector<float> max_events, max_left, max_right, min_events, min_left, min_right;
+
+   compute_arrival_curve(ex, min_window_size, max_window_size, max_event, max_events, max_left, max_right, min_events, min_left, min_right);
 
    return Rcpp::List::create (
-                              Rcpp::Named("max_vec") = max_vec, 
-                              Rcpp::Named("min_vec") = min_vec
-                              );
- }
+                              Rcpp::Named("max_events") = max_events,
+                              Rcpp::Named("max_left") = max_left,
+                              Rcpp::Named("max_right") = max_right,
 
-RCPP_MODULE(mod) {
-  function( "bla",         &bla );
+                              Rcpp::Named("min_events") = min_events,
+                              Rcpp::Named("min_left") = min_left,
+                              Rcpp::Named("min_right") = min_right
+                              );
 }

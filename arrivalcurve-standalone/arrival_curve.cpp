@@ -180,35 +180,35 @@ float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_
         get_counts(e, curr);
         float curr_max = maxc, curr_min = minc, next;
         while(curr_max != last_max){
-                next = bin_max_steps(e, curr, last, curr_max);              
+                next = bin_max_steps(e, curr, last, curr_max);
                 totalcount += getcount;
                 getcount = 0;
                 max_events.push_back(curr_max);
-		max_left.push_back(curr);
-		max_right.push_back(next);
+                max_left.push_back(curr);
+                max_right.push_back(next);
                 curr = next + 1;
                 curr_max = next_max;
         }
         totalcount += getcount;
         getcount = 0;
-	max_events.push_back(curr_max);
-	max_left.push_back(curr);
-	max_right.push_back(last);
+        max_events.push_back(curr_max);
+        max_left.push_back(curr);
+        max_right.push_back(last);
         curr = min_windows_size;
         while(curr_min != last_min){
                 next = bin_min_steps(e, curr, last, curr_min, false);
                 totalcount += getcount;
                 getcount = 0;
                 min_events.push_back(curr_min);
-		min_left.push_back(curr);
-		min_right.push_back(next);
+                min_left.push_back(curr);
+                min_right.push_back(next);
                 curr = next + 1;
                 curr_min = next_min;
         }
         totalcount += getcount;
         getcount = 0;
         min_events.push_back(curr_min);
-	min_left.push_back(curr);
-	min_right.push_back(last);
-	return totalcount;
+        min_left.push_back(curr);
+        min_right.push_back(last);
+        return totalcount;
 }
