@@ -173,42 +173,42 @@ float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool
 }
 
 float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, float max_event_param, vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
-	max_event = max_event_param;
+        max_event = max_event_param;
         float curr = min_windows_size, last = max_windows_size;
         get_counts(e, last);
         float last_max = maxc, last_min = minc;
         get_counts(e, curr);
         float curr_max = maxc, curr_min = minc, next;
         while(curr_max != last_max){
-                next = bin_max_steps(e, curr, last, curr_max);              
+                next = bin_max_steps(e, curr, last, curr_max);
                 totalcount += getcount;
                 getcount = 0;
                 max_events.push_back(curr_max);
-		max_left.push_back(curr);
-		max_right.push_back(next);
+                max_left.push_back(curr);
+                max_right.push_back(next);
                 curr = next + 1;
                 curr_max = next_max;
         }
         totalcount += getcount;
         getcount = 0;
-	max_events.push_back(curr_max);
-	max_left.push_back(curr);
-	max_right.push_back(last);
+        max_events.push_back(curr_max);
+        max_left.push_back(curr);
+        max_right.push_back(last);
         curr = min_windows_size;
         while(curr_min != last_min){
                 next = bin_min_steps(e, curr, last, curr_min, false);
                 totalcount += getcount;
                 getcount = 0;
                 min_events.push_back(curr_min);
-		min_left.push_back(curr);
-		min_right.push_back(next);
+                min_left.push_back(curr);
+                min_right.push_back(next);
                 curr = next + 1;
                 curr_min = next_min;
         }
         totalcount += getcount;
         getcount = 0;
         min_events.push_back(curr_min);
-	min_left.push_back(curr);
-	min_right.push_back(last);
-	return totalcount;
+        min_left.push_back(curr);
+        min_right.push_back(last);
+        return totalcount;
 }
