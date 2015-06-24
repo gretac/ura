@@ -172,8 +172,8 @@ float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool
         }
 }
 
-float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, float max_event_param, vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
-	max_event = max_event_param;
+float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
+	max_event = e[e.size()-1];
         float curr = min_windows_size, last = max_windows_size;
         get_counts(e, last);
         float last_max = maxc, last_min = minc;

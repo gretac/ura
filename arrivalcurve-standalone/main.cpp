@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
                 cout << "[maximum interval] is larger than the max event time. Exiting...\n";
                 return 0;
         }
-        float totalcount = compute_arrival_curve(e, stof(argv[1]), stof(argv[2]), max_event, max_events, max_left, max_right, min_events, min_left, min_right);
+        float totalcount = compute_arrival_curve(e, stof(argv[1]), stof(argv[2]), max_events, max_left, max_right, min_events, min_left, min_right);
 	auto ml_it = max_left.begin();
 	auto mr_it = max_right.begin();
 	for(auto me_it = max_events.begin(); me_it != max_events.end(); ++me_it){
