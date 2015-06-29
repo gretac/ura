@@ -42,7 +42,7 @@ void get_min(vector<float> &e, float invl, bool enable){
                         else
                                 ldiff = e[lower] - e[lower - 1];  // how far to get to next lower event
                 }
-                //stream << "ldiff " << ldiff << " udiff " << udiff << endl;
+                //cout << "ldiff " << ldiff << " udiff " << udiff << endl;
                 if(udiff < ldiff){
                         upper++;
                         ldiff -= udiff;
@@ -110,7 +110,7 @@ void get_counts(vector<float> &e, float invl){
                         else
                                 ldiff = e[lower] - e[lower - 1];  // how far to get to next lower event
                 }
-                //stream << "ldiff " << ldiff << " udiff " << udiff << endl;
+                //cout << "ldiff " << ldiff << " udiff " << udiff << endl;
                 if(udiff < ldiff){
                         upper++;
                         ldiff -= udiff;
@@ -136,7 +136,7 @@ void get_counts(vector<float> &e, float invl){
                         delay = true;
                 }
                 if(maxc < events) maxc = events;
-                if(minc > events - 1) minc = events - 1; //IMPORTANT: the reason is the delay subtraction
+                if(minc > events - 1 && events - 1 >= 0) minc = events - 1; //IMPORTANT: the reason is the delay subtraction
         }
 }
 
@@ -174,11 +174,13 @@ float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool
 
 float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
 	max_event = e[e.size()-1];
-        float curr = min_windows_size, last = max_windows_size;
+        float curr = min_windows_size, last = max_windows_size;	
         get_counts(e, last);
-        float last_max = maxc, last_min = minc;
+        float last_max = maxc, last_min = minc;	
+	//cout << last_min << endl;
         get_counts(e, curr);
         float curr_max = maxc, curr_min = minc, next;
+	//cout << curr_min << endl;
         while(curr_max != last_max){
                 next = bin_max_steps(e, curr, last, curr_max);
                 totalcount += getcount;
