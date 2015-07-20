@@ -13,6 +13,14 @@ using namespace std;
 ofstream stream;
 float max_event, maxc, minc, prev_minc, next_max, next_min, getcount = 0, totalcount = 0;
 
+//This method set the minc (global variable) and it takes three arguments
+//e is the event vector
+//invl is the interval size
+//enable is a flag indicating whether to turn on skip mode or not
+//skip mode is for skipping the remaining binary searches
+//if the number of steps searched up to this point equals
+//to the prior number of steps
+
 void get_min(vector<float> &e, float invl, bool enable){
         getcount++;
         float upper = 0;
@@ -72,6 +80,13 @@ void get_min(vector<float> &e, float invl, bool enable){
         }
         prev_minc = minc;
 }
+
+//This method set the minc (global variable) and the maxc (global variable) 
+//and it takes two arguments
+//e is the event vector
+//invl is the interval size
+//skip mode is not allowed because calculating maxc 
+//does not allow skipping
 
 void get_counts(vector<float> &e, float invl){
         getcount++;
@@ -140,6 +155,13 @@ void get_counts(vector<float> &e, float invl){
         }
 }
 
+//This method returns the interval size when the number of max events increase by one
+//and it takes four arguments
+//e is the event vector
+//lower is the lower interval size
+//upper is the upper interval size
+//curr is the current size for reference
+
 float bin_max_steps(vector<float> &e, float lower, float upper, float curr){
         long long mid = (lower + upper) / 2;
         get_counts(e, (float)mid);
@@ -156,6 +178,17 @@ float bin_max_steps(vector<float> &e, float lower, float upper, float curr){
         }
 }
 
+//This method returns the interval size when the number of min events increase by one
+//and it takes five arguments
+//e is the event vector
+//lower is the lower interval size
+//upper is the upper interval size
+//curr is the current size for reference
+//enable is a flag indicating whether to turn on skip mode or not
+//skip mode is for skipping the remaining binary searches
+//if the number of steps searched up to this point equals
+//to the prior number of steps
+
 float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool enable){
         long long mid = (lower + upper) / 2;
         get_min(e, (float)mid, enable);
@@ -171,6 +204,18 @@ float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool
                 return bin_min_steps(e, lower, mid - 1, curr, false);
         }
 }
+
+//This method returns the total number of calls made to compute the entire arrival curve
+//and it takes nine arguments
+//e is the event vector
+//min_windows_size is the lower interval size
+//max_windows_size is the upper interval size
+//max_events is the result in the form of a vector holding the maximum number of events
+//max_left is the result in the form of a vector holding the left boundary of the maximum events
+//max_right is the result in the form of a vector holding the right boundary of the maximum events
+//min_events is the result in the form of a vector holding the minimum number of events
+//min_left is the result in the form of a vector holding the left boundary of the minimum events
+//min_right is the result in the form of a vector holding the right boundary of the minimum events
 
 float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
 	max_event = e[e.size()-1];
