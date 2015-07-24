@@ -163,8 +163,7 @@ void get_counts(vector<float> &e, float invl){
 //upper is the upper interval size
 //curr is the current size for reference
 
-float bin_max_steps(vector<float> &e, float lower, float upper, float curr, float res){     
-	if(lower >= upper) return lower;	
+float bin_max_steps(vector<float> &e, float lower, float upper, float curr, float res){     	
 	long long mid = (lower + upper) / 2;
         get_counts(e, (float)mid);
         if(maxc == curr){
@@ -196,7 +195,6 @@ float bin_max_steps(vector<float> &e, float lower, float upper, float curr, floa
 //to the prior number of steps
 
 float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool enable, float res){
-	if(lower >= upper) return lower;
         long long mid = (lower + upper) / 2;
         get_min(e, (float)mid, enable);
         if(minc == curr){
