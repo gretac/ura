@@ -11,7 +11,8 @@
 using namespace std;
 
 ofstream stream;
-float max_event, maxc, minc, prev_minc, next_max, next_min, getcount = 0, totalcount = 0;
+float max_event, maxc, minc, prev_minc, next_max, 
+last_max, last_min, next_min, getcount = 0, totalcount = 0;
 
 //This method set the minc (global variable) and it takes three arguments
 //e is the event vector
@@ -162,13 +163,15 @@ void get_counts(vector<float> &e, float invl){
 //upper is the upper interval size
 //curr is the current size for reference
 
-float bin_max_steps(vector<float> &e, float lower, float upper, float curr, float res){
-        long long mid = (lower + upper) / 2;
+float bin_max_steps(vector<float> &e, float lower, float upper, float curr, float res){     
+	if(lower >= upper) return lower;	
+	long long mid = (lower + upper) / 2;
         get_counts(e, (float)mid);
         if(maxc == curr){
-		if(mid + res >= max_event)
-                	return upper - 1;
-		else
+		if(mid + res >= max_event){
+                	next_max = last_max;
+			return mid;
+		}else
 			get_counts(e, mid + res);
                 if(maxc > curr){
                         next_max = maxc;
@@ -193,13 +196,15 @@ float bin_max_steps(vector<float> &e, float lower, float upper, float curr, floa
 //to the prior number of steps
 
 float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool enable, float res){
+	if(lower >= upper) return lower;
         long long mid = (lower + upper) / 2;
         get_min(e, (float)mid, enable);
         if(minc == curr){
-		if(mid + res >= max_event)
-                	return upper - 1;
-		else
-                get_min(e, mid + res, enable);
+		if(mid + res >= max_event){
+                	next_min = last_min;
+			return mid;
+		}else
+                	get_min(e, mid + res, enable);
                 if(minc > curr){
                         next_min = minc;
                         return mid;
