@@ -11,8 +11,8 @@
 using namespace std;
 
 int main(int argc, char *argv[]){
-        if ( argc != 5 || atoll(argv[1]) < 0 || atoll(argv[2]) <= atoll(argv[1]) ){
-                cout << "usage: [minimum interval ( >= 0 ns )] [maximum interval] [input] [output]\n";
+        if ( argc != 6 || atoll(argv[1]) < 0 || atoll(argv[2]) <= atoll(argv[1]) ){
+                cout << "usage: [minimum interval ( >= 0 ns )] [maximum interval] [input] [output] [res]\n";
                 return 0;
         }
     clock_t start = clock();
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
         infile.close();
 	ofstream stream;
         stream.open(argv[4]);
-        float totalcount = compute_arrival_curve(e, stof(argv[1]), stof(argv[2]), max_events, max_left, max_right, min_events, min_left, min_right);
+        float totalcount = compute_arrival_curve(e, stof(argv[1]), stof(argv[2]), stof(argv[5]), max_events, max_left, max_right, min_events, min_left, min_right);
 	auto ml_it = max_left.begin();
 	auto mr_it = max_right.begin();
 	for(auto me_it = max_events.begin(); me_it != max_events.end(); ++me_it){

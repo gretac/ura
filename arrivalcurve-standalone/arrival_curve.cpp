@@ -162,19 +162,22 @@ void get_counts(vector<float> &e, float invl){
 //upper is the upper interval size
 //curr is the current size for reference
 
-float bin_max_steps(vector<float> &e, float lower, float upper, float curr){
+float bin_max_steps(vector<float> &e, float lower, float upper, float curr, float res){
         long long mid = (lower + upper) / 2;
         get_counts(e, (float)mid);
         if(maxc == curr){
-                get_counts(e, mid + 1);
+		if(mid + res >= max_event)
+                	return upper - 1;
+		else
+			get_counts(e, mid + res);
                 if(maxc > curr){
                         next_max = maxc;
                         return mid;
                 } else {
-                        return bin_max_steps(e, mid + 1, upper, curr);
+                        return bin_max_steps(e, mid + 1, upper, curr, res);
                 }
         } else {
-                return bin_max_steps(e, lower, mid - 1, curr);
+                return bin_max_steps(e, lower, mid - 1, curr, res);
         }
 }
 
@@ -189,19 +192,22 @@ float bin_max_steps(vector<float> &e, float lower, float upper, float curr){
 //if the number of steps searched up to this point equals
 //to the prior number of steps
 
-float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool enable){
+float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool enable, float res){
         long long mid = (lower + upper) / 2;
         get_min(e, (float)mid, enable);
         if(minc == curr){
-                get_min(e, mid + 1, enable);
+		if(mid + res >= max_event)
+                	return upper - 1;
+		else
+                get_min(e, mid + res, enable);
                 if(minc > curr){
                         next_min = minc;
                         return mid;
                 } else {
-                        return bin_min_steps(e, mid + 1, upper, curr, true);
+                        return bin_min_steps(e, mid + 1, upper, curr, true, res);
                 }
         } else {
-                return bin_min_steps(e, lower, mid - 1, curr, false);
+                return bin_min_steps(e, lower, mid - 1, curr, false, res);
         }
 }
 
@@ -216,9 +222,7 @@ float bin_min_steps(vector<float> &e, float lower, float upper, float curr, bool
 //min_events is the result in the form of a vector holding the minimum number of events
 //min_left is the result in the form of a vector holding the left boundary of the minimum events
 //min_right is the result in the form of a vector holding the right boundary of the minimum events
-
-float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, 
-vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, 
+float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, float res, vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, 
 vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
 	max_event = e[e.size()-1];
         float curr = min_windows_size, last = max_windows_size;	
@@ -230,7 +234,7 @@ vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
         float curr_max = maxc, curr_min = minc, next;
 	//cout << curr_min << endl;
         while(curr_max != last_max){
-                next = bin_max_steps(e, curr, last, curr_max);
+                next = bin_max_steps(e, curr, last, curr_max, res);
                 totalcount += getcount;
                 getcount = 0;
                 max_events.push_back(curr_max);
@@ -251,7 +255,7 @@ vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
         	max_right.push_back(max_windows_size);
 	}
         while(curr_min != last_min){
-                next = bin_min_steps(e, curr, last, curr_min, false);
+                next = bin_min_steps(e, curr, last, curr_min, false, res);
                 totalcount += getcount;
                 getcount = 0;
                 min_events.push_back(curr_min);
@@ -272,3 +276,5 @@ vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
 	}
         return totalcount;
 }
+
+

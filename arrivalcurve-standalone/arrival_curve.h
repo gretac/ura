@@ -18,7 +18,7 @@ using namespace std;
 //min_right is the result in the form of a vector holding the right boundary of the minimum events
 
 float compute_arrival_curve(vector<float> &e, float min_windows_size, float max_windows_size, 
-vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, 
+float res, vector<float> &max_events, vector<float> &max_left, vector<float> &max_right, 
 vector<float> &min_events, vector<float> &min_left, vector<float> &min_right);
 
 #endif
