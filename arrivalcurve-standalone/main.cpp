@@ -11,8 +11,8 @@
 using namespace std;
 
 int main(int argc, char *argv[]){
-        if ( argc != 5 || atoll(argv[1]) <= 0 || atoll(argv[2]) <= atoll(argv[1]) ){
-                cout << "usage: [minimum interval ( >= 1 ns )] [maximum interval] [input] [output]\n";
+        if ( argc != 5 || atoll(argv[1]) < 0 || atoll(argv[2]) <= atoll(argv[1]) ){
+                cout << "usage: [minimum interval ( >= 0 ns )] [maximum interval] [input] [output]\n";
                 return 0;
         }
     clock_t start = clock();
@@ -34,11 +34,6 @@ int main(int argc, char *argv[]){
         infile.close();
 	ofstream stream;
         stream.open(argv[4]);
-        float max_event = e[e.size() - 1]; //this is part of error checking before calling computer_arrival_curve
-        if(atoll(argv[2]) > max_event){
-                cout << "[maximum interval] is larger than the max event time. Exiting...\n";
-                return 0;
-        }
         float totalcount = compute_arrival_curve(e, stof(argv[1]), stof(argv[2]), max_events, max_left, max_right, min_events, min_left, min_right);
 	auto ml_it = max_left.begin();
 	auto mr_it = max_right.begin();

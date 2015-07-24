@@ -222,6 +222,7 @@ vector<float> &max_events, vector<float> &max_left, vector<float> &max_right,
 vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
 	max_event = e[e.size()-1];
         float curr = min_windows_size, last = max_windows_size;	
+	if(max_windows_size >= max_event) last = max_event - 1;
         get_counts(e, last);
         float last_max = maxc, last_min = minc;	
 	//cout << last_min << endl;
@@ -244,6 +245,11 @@ vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
         max_left.push_back(curr);
         max_right.push_back(last);
         curr = min_windows_size;
+	if(max_windows_size >= max_event) {
+		max_events.push_back(e.size());
+        	max_left.push_back(max_event);
+        	max_right.push_back(max_windows_size);
+	}
         while(curr_min != last_min){
                 next = bin_min_steps(e, curr, last, curr_min, false);
                 totalcount += getcount;
@@ -259,5 +265,10 @@ vector<float> &min_events, vector<float> &min_left, vector<float> &min_right){
         min_events.push_back(curr_min);
         min_left.push_back(curr);
         min_right.push_back(last);
+	if(max_windows_size >= max_event) {
+		min_events.push_back(e.size());
+        	min_left.push_back(max_event);
+        	min_right.push_back(max_windows_size);
+	}
         return totalcount;
 }
