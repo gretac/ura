@@ -1,0 +1,13 @@
+Package: autoperiod
+Type: Package
+Title: An Implementation of Time Series Periodicity Detection Algorithm
+Version: 1.0
+Date: 2015-06-18
+Author: Aiden Lee
+Maintainer: Who to complain to <aiden.jihun.lee@gmail.com>
+Description: An implementation of time series periodicity detection algorithm in R. It combines 
+  the advantage of periodograms of finding important periods and provides an accurate estimation
+  of the period through a verification phase using the circular autocorelation function.
+License: MIT
+Imports: foreach, testthat
+Packaged: 2015-06-26 17:18:57 UTC; Aiden_Lee
