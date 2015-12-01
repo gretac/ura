@@ -73,3 +73,21 @@ test_that("Regex: (<0.1> | <1.0>)+ ", {
   expect_equal(e_success, r$success)
   expect_equal(e_reset, r$reset)
 })
+
+test_that("Regex: <0+><1+><2+> ", {
+
+  traceTimes = c(0, 2, 3, 5, 7)
+  traceEvents = c(1, 2, 2, 1, 2)
+  alphabetLength = 3
+  startIntervals = c(0, 0,0)
+  endIntervals = c(2, 4, 6)
+  intervals = list("start" = startIntervals, "end" = endIntervals)
+
+  r = processTrace(traceTimes, traceEvents, alphabetLength, intervals, 5)
+
+  #e_success = array(c(NA, 1, 2, NA), dim = c(2, 2))
+  #e_reset = array(c(NA, 1, 0, NA), dim = c(2, 2))
+
+  #expect_equal(e_success, r$success)
+  #expect_equal(e_reset, r$reset)
+})
