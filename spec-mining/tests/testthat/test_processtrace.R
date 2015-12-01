@@ -84,10 +84,29 @@ test_that("Regex: <0+><1+><2+> ", {
   intervals = list("start" = startIntervals, "end" = endIntervals)
 
   r = processTrace(traceTimes, traceEvents, alphabetLength, intervals, 5)
-  
   #log scripts under progress.
   #will add assertions with log scripts
-  	
+
+  #e_success = array(c(NA, 1, 2, NA), dim = c(2, 2))
+  #e_reset = array(c(NA, 1, 0, NA), dim = c(2, 2))
+
+  #expect_equal(e_success, r$success)
+  #expect_equal(e_reset, r$reset)
+})
+test_that("Regex: (0.<1+>.2) ", {
+
+  traceTimes = c(0, 2, 3, 5, 6)
+  traceEvents = c(1, 2, 2, 1, 1)
+  alphabetLength = 3
+  startIntervals = c(0)
+  endIntervals = c(2)
+  intervals = list("start" = startIntervals, "end" = endIntervals)
+
+  r = processTrace(traceTimes, traceEvents, alphabetLength, intervals, 6)
+
+  #log scripts under progress.
+  #will add assertions with log scripts
+
   #e_success = array(c(NA, 1, 2, NA), dim = c(2, 2))
   #e_reset = array(c(NA, 1, 0, NA), dim = c(2, 2))
 

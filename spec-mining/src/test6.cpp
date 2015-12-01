@@ -2,7 +2,7 @@
 #line 1 "automaton.rl"
 #include "automaton.h"
 
-void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime, const NumericVector &startInterval, const NumericVector &endInterval) {
+void Test6::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime, const NumericVector &startInterval, const NumericVector &endInterval) {
 #line 7 "../src/automaton.cpp"
 static const int foo_start = 1;
 static const int foo_first_final = 4;
@@ -102,7 +102,7 @@ return;
 
 }
 
-ParserAutomaton::ParserAutomaton() {
+Test6::Test6() {
    dimCount = 3;
    clockCount = 1;
 }
