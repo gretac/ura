@@ -1,4 +1,5 @@
 #include "automaton.h"
+//#include <iostream>
 
 bool anyEqual(vector<int> v){
 
@@ -11,6 +12,15 @@ bool anyEqual(vector<int> v){
 
   return false;
 }
+
+/*The below function generates next permutation for a given timed regex
+  using the given possible elements of alphabets and dimension of the
+  timed automaton.
+
+  Arguments:
+  counter: Pointer to a vector, which maintains possible values for different
+  dimensions of a timed automaton
+  base: The number of elements in a alphabet set */
 
 void incrementPermCounter(vector<int>* counter, int base){
 
@@ -42,7 +52,7 @@ List processTrace_rcpp(const NumericVector traceTimes,
 
   // Input Checking
   if (traceTimes.length() != traceEvents.length()) {
-    stop("tracesTimes length not equal to traceEvents length");
+      stop("tracesTimes length not equal to traceEvents length");
   }
   if (startInterval.length() != endInterval.length()) {
     stop("number of start intervals not equal to number of end intervals");
@@ -54,8 +64,10 @@ List processTrace_rcpp(const NumericVector traceTimes,
     stop("alphabetLength is less than number of dimensions in automaton");
   }
 
-
+  //Total possible permutations =  alphabetlength P dimcount
   int permCount = (int) pow(alphabetLength, dimCount);
+
+
 
   // Initialize state storage
   IntegerVector symbols(permCount);
@@ -77,12 +89,25 @@ List processTrace_rcpp(const NumericVector traceTimes,
   for (int i=0; i < permCount; i++) {
 
     if (anyEqual(perm)) {
+      /* We should not process permutations where the values of
+         distinct dimensions of timed automata match with each other
+      */
       symbols(i) = NA_INTEGER;
       succ(i) = NA_INTEGER;
       reset(i) = NA_INTEGER;
     } else {
+
+      #ifdef DEBUG
+        for (int x=0; x < dimCount; x++) {
+          std::cout<<perm[x]<<" ";
+        }
+        std::cout<<std::endl;
+      #endif
       for (int x=0; x < dimCount; x++) {
         permMap[perm[x]].push_back(make_pair(i, x));
+        #ifdef DEBUG
+          std::cout<<x<<"="<<perm[x] << ":"<<i<<" "<<std::endl;
+        #endif
       }
     }
 
@@ -97,10 +122,14 @@ List processTrace_rcpp(const NumericVector traceTimes,
 
     // Since trace alphabet seems to start from 1 instead of 0
     iLoc = traceEvents(i) - 1;
+    // iLoc is the current event
+
     iTime= traceTimes(i);
 
     for(int x=0; x < permMap[iLoc].size(); x++) {
 
+      //Update automata states and 'success/reset' counters
+      //for permutations which contain event marked with `iloc'
       a->computeNextState(&(symbols(permMap[iLoc][x].first)),
                        &(times[permMap[iLoc][x].first]),
                        &(succ(permMap[iLoc][x].first)),

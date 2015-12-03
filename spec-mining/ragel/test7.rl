@@ -1,6 +1,6 @@
 #include "automaton.h"
 
-void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime, const NumericVector &startInterval, const NumericVector &endInterval) {%%{
+void Test7::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime, const NumericVector &startInterval, const NumericVector &endInterval) {%%{
     machine foo;
 
     action R { (*reset)++; STATE(foo_start); RT return; }
@@ -28,7 +28,7 @@ return;
 
 }
 
-ParserAutomaton::ParserAutomaton() {
+Test7::Test7() {
    dimCount = 3;
    clockCount = 1;
 }

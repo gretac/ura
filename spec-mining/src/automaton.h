@@ -1,4 +1,4 @@
-// [[Rcpp::plugins(cpp11)]]
+	// [[Rcpp::plugins(cpp11)]]
 #ifndef AUTOMATON_H
 #define AUTOMATON_H
 
@@ -134,6 +134,16 @@ public:
 class Test6: public Automaton {
 public:
   Test6();
+  void computeNextState(int *currentState,
+                        vector<double> *currentTimes,
+                        int *succ, int *reset,
+                        const int nextSymbol, const double newTime,
+                        const NumericVector &startInterval,
+                        const NumericVector &endInterval);
+};
+class Test7: public Automaton {
+public:
+  Test7();
   void computeNextState(int *currentState,
                         vector<double> *currentTimes,
                         int *succ, int *reset,

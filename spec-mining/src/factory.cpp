@@ -29,6 +29,9 @@ unique_ptr<Automaton> automatonFactory(const int automaton) {
   case TEST6_AUTOMATON: {
     return unique_ptr<Automaton>(new Test6);
   }
+  case TEST7_AUTOMATON: {
+    return unique_ptr<Automaton>(new Test7);
+  }
   // error in case of undefined automaton
   default:
     stop("Unsupported automaton");
