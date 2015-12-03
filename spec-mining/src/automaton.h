@@ -151,6 +151,16 @@ public:
                         const NumericVector &startInterval,
                         const NumericVector &endInterval);
 };
+class Test8: public Automaton {
+public:
+  Test8();
+  void computeNextState(int *currentState,
+                        vector<double> *currentTimes,
+                        int *succ, int *reset,
+                        const int nextSymbol, const double newTime,
+                        const NumericVector &startInterval,
+                        const NumericVector &endInterval);
+};
 // Helpers
 bool anyEqual(vector<int> v);
 void incrementPermCounter(vector<int>* counter, int base);

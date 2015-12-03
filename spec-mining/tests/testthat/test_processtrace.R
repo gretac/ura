@@ -125,3 +125,20 @@ test_that("Regex: (<2.(1)+.0>)+ ", {
   expect_equal(e_success, r$success)
   expect_equal(e_reset, r$reset)
 })
+test_that("Regex: <0.1.2.3> ", {
+
+  traceTimes = c(0, 1, 2, 3, 4, 6, 8)
+  traceEvents = c(1, 2, 3, 4, 1, 2, 3)
+  alphabetLength = 4
+  startIntervals = c(1)
+  endIntervals = c(4)
+  intervals = list("start" = startIntervals, "end" = endIntervals)
+
+  r = processTrace(traceTimes, traceEvents, alphabetLength, intervals, 8)
+
+  e_success = array(c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, 1, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, 0, NA, NA, NA, NA, NA, NA, NA, NA, 0, NA, NA, 1, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA), dim = c(4, 4, 4, 4))
+  e_reset = array(c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 6, NA, NA, 4, NA, NA, NA, NA, NA, NA, NA, NA, 6, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, NA, NA, NA, 5, NA, NA, 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 6, NA, NA, 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 6, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, 4, NA, NA, NA, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 5, NA, NA, 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 5, NA, NA, 3, NA, NA, NA, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, 5, NA, NA, NA, NA, NA, NA, NA, NA, 5, NA, NA, 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA), dim = c(4, 4, 4, 4))
+
+  expect_equal(e_success, r$success)
+  expect_equal(e_reset, r$reset)
+})
