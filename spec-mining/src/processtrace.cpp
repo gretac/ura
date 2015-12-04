@@ -39,10 +39,13 @@ List processTrace_rcpp(const NumericVector traceTimes,
                   const IntegerVector traceEvents,
                   const int alphabetLength,
                   const List intervals,
-                  const int automaton) {
+                  SEXP automaton) {
 
     // Instantiate Correct Automaton
-  unique_ptr<Automaton> a = automatonFactory(automaton);
+  Rcpp::XPtr< Automaton > a(automaton);  
+  
+  //unique_ptr<Automaton> a = automatonFactory(automaton);
+  
   int dimCount = a->dimCount;
   int clockCount = a->clockCount;
 

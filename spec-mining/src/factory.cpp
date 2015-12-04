@@ -3,10 +3,10 @@
 unique_ptr<Automaton> automatonFactory(const int automaton) {
 
   switch(automaton) {
-
-  case PARSER_AUTOMATON: {
-    return unique_ptr<Automaton>(new ParserAutomaton);
-  }
+//
+//  case PARSER_AUTOMATON: {
+//    return unique_ptr<Automaton>(new ParserAutomaton);
+//  }
 
   case TEST1_AUTOMATON: {
     return unique_ptr<Automaton>(new Test1);

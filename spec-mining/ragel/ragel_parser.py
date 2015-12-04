@@ -17,7 +17,7 @@ def parser(input):
             expressions.append(current_char)
         i += 1
 
-    expressions.append(") @U $~STEP $lerr(R);")
+    expressions.append(") @U $~STEP $lerr(	R);")
 
     return "".join(expressions)
 
@@ -126,13 +126,13 @@ def create_action_ct(file, counter):
     return
 
 
-def write_to_file(input):
+def write_to_file(input, dir):
     '''
         Creates a custom automaton.rl ragel file used by the AutomatonR Package
 
         input: a timed regular expression
     '''
-    with open('automaton.rl', 'w') as f:
+    with open(dir + 'automaton.rl', 'w') as f:
         ragel_expression = parser(input)
 
         f.write("#include \"automaton.h\"\n\n")
