@@ -17,7 +17,7 @@ def parser(input):
             expressions.append(current_char)
         i += 1
 
-    expressions.append(") @U $~STEP $lerr(	R);")
+    expressions.append(") @U $~STEP $lerr(R);")
 
     return "".join(expressions)
 
@@ -132,44 +132,44 @@ def write_to_file(input, temprl, headerLoc):
 
         input: a timed regular expression
     '''
-    with open(temprl, 'w') as f:
-        ragel_expression = parser(input)
+    f = open(temprl, "w+")
+    ragel_expression = parser(input)
 
-        f.write("#include \"" + str(headerLoc) + "\"\n\n")
-        f.write("void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime, const NumericVector &startInterval, const NumericVector &endInterval) {")
+    f.write("#include \"" + str(headerLoc) + "\"\n\n")
+    f.write("void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime, const NumericVector &startInterval, const NumericVector &endInterval) {")
 
-        f.write("%%{\n")
-        f.write("    machine foo;\n\n")
-        f.write("    action R { (*reset)++; STATE(foo_start); RT return; }\n")
-        f.write("    action U { (*succ)++; }\n")
-        f.write("    action STEP { STATE(ftargs); return; }\n\n")
+    f.write("%%{\n")
+    f.write("    machine foo;\n\n")
+    f.write("    action R { (*reset)++; STATE(foo_start); RT return; }\n")
+    f.write("    action U { (*succ)++; }\n")
+    f.write("    action STEP { STATE(ftargs); return; }\n\n")
 
-        create_actions(f, global_clock_counter)
+    create_actions(f, global_clock_counter)
 
-        f.write("\n    getkey nextSymbol;\n")
-        f.write("    variable p dummy;\n")
-        f.write("    write data;\n\n")
-        f.write("}%%\n\n")
+    f.write("\n    getkey nextSymbol;\n")
+    f.write("    variable p dummy;\n")
+    f.write("    write data;\n\n")
+    f.write("}%%\n\n")
 
-        f.write("int cs = *currentState, dummy = 0, eof = -1;\n\n")
+    f.write("int cs = *currentState, dummy = 0, eof = -1;\n\n")
 
-        f.write("%%{\n")
-        f.write("    main := " + ragel_expression + "\n")
-        f.write("    write init nocs;\n")
-        f.write("    write exec noend;\n")
-        f.write("}%%\n\n")
+    f.write("%%{\n")
+    f.write("    main := " + ragel_expression + "\n")
+    f.write("    write init nocs;\n")
+    f.write("    write exec noend;\n")
+    f.write("}%%\n\n")
 
-        f.write("return; \n\n}\n\n")
-        f.write("ParserAutomaton::ParserAutomaton() {\n")
-        f.write("   dimCount = " + str(global_alphabet_counter) + ";\n")
-        f.write("   clockCount = " + str(global_clock_counter) + ";\n")
-        f.write("}\n")
-        
-        f.write("// [[Rcpp::export]]\n");
-        f.write("Rcpp::XPtr<Automaton> getAutomatonPointer(){\n")
-        f.write("Automaton *ptr = new ParserAutomaton();\n")
-        f.write("Rcpp::XPtr< Automaton > p(ptr, true);\n")
-        f.write("return p;\n")
-        f.write("}") 
+    f.write("return; \n\n}\n\n")
+    f.write("ParserAutomaton::ParserAutomaton() {\n")
+    f.write("   dimCount = " + str(global_alphabet_counter) + ";\n")
+    f.write("   clockCount = " + str(global_clock_counter) + ";\n")
+    f.write("}\n")
+    
+    f.write("// [[Rcpp::export]]\n");
+    f.write("Rcpp::XPtr<Automaton> getAutomatonPointer(){\n")
+    f.write("Automaton *ptr = new ParserAutomaton();\n")
+    f.write("Rcpp::XPtr< Automaton > p(ptr, true);\n")
+    f.write("return p;\n")
+    f.write("}") 
 
     return

@@ -1,3 +1,4 @@
+require(Rcpp)
 #' Process timed regex
 #'
 #' Processes the trace on a given timed regex, returning number of successes and resets
@@ -13,14 +14,25 @@
 #'
 #' @return List of two nd-arrays.
 #' Success and Reset are counters values for each alphabet configuration.
-processTrace = function(traceTimes, traceEvents, alphabetLength, intervals, automaton=0) {
+processTrace = function(traceTimes, traceEvents, alphabetLength, intervals, automatonStr) {
 
-  result = processTrace_rcpp(traceTimes, traceEvents, alphabetLength, intervals, automaton)
+  trlfile<-paste("\"",tempfile("automaton",fileext = ".rl"),"\"", sep = "")
+  tcppfile<-tempfile("automaton",fileext = ".cpp")
+  tregex<-paste("\"",automatonStr,"\"",sep = "")
+
+  headerLoc<-paste(find.package("automatonR"),"/exec/automaton.h",sep = "")
+  pyscript<-paste(find.package("automatonR"), "/exec/parse.py",sep = "")
+  try(system(paste("python",pyscript, tregex, trlfile,tcppfile, headerLoc), ignore.stdout = FALSE))
+  sourceCpp(tcppfile)
+  automatonPtr<-getAutomatonPointer()
+
+  result = processTrace_rcpp(traceTimes, traceEvents, alphabetLength, intervals, automatonPtr)
 
   # Transpose to make indicies more intuitive
   success = aperm(result$success, c(length(dim(result$success)):1))
   reset = aperm(result$reset, c(length(dim(result$reset)):1))
-
+  #unlink(trlfile)
+  #unlink(tcppfile)
   return (list("success"=success,"reset"=reset))
 
 }
