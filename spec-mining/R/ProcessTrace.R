@@ -21,7 +21,7 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, intervals, auto
 
   headerLoc<-paste(find.package("automatonR"),"/exec/automaton.h",sep = "")
   pyscript<-paste(find.package("automatonR"), "/exec/parse.py",sep = "")
-  try(system(paste("python",pyscript, tregex, trlfile,tcppfile, headerLoc), ignore.stdout = FALSE))
+  try(system(paste("python",pyscript, tregex, trlfile,tcppfile, headerLoc), ignore.stdout = TRUE))
   sourceCpp(tcppfile)
   automatonPtr<-getAutomatonPointer()
 
