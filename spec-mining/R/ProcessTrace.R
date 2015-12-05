@@ -9,8 +9,7 @@ require(Rcpp)
 #' @param alphabetLength Integer greater than zero indicating number of unique events.
 #' @param intervals DataFrame with two columns, start and end,
 #'  corresponding to the intervals used in the regular expression.
-#' @param automaton Integer id of automaton being used. Should be 0 for parser generated automaton.
-#'  Ids greater than 0 are used mainly for testing.
+#' @param automatonStr the timed-regular expression template
 #'
 #' @return List of two nd-arrays.
 #' Success and Reset are counters values for each alphabet configuration.
@@ -31,8 +30,8 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, intervals, auto
   # Transpose to make indicies more intuitive
   success = aperm(result$success, c(length(dim(result$success)):1))
   reset = aperm(result$reset, c(length(dim(result$reset)):1))
-  #unlink(trlfile)
-  #unlink(tcppfile)
+  unlink(trlfile)
+  unlink(tcppfile)
   return (list("success"=success,"reset"=reset))
 
 }
