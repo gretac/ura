@@ -1,4 +1,5 @@
 library(automatonR)
+
 context("Automaton Testing")
 
 test_that("Regex: (1.<0+>)+ ", {
