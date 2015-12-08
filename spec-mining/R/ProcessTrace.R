@@ -9,20 +9,25 @@ require(Rcpp)
 #' @param alphabetLength Integer greater than zero indicating number of unique events.
 #' @param intervals DataFrame with two columns, start and end,
 #'  corresponding to the intervals used in the regular expression.
-#' @param automatonStr the timed-regular expression template
+#' @param timedRegEx the timed-regular expression template
 #'
 #' @return List of two nd-arrays.
 #' Success and Reset are counters values for each alphabet configuration.
-processTrace = function(traceTimes, traceEvents, alphabetLength, intervals, automatonStr) {
+processTrace = function(traceTimes, traceEvents, alphabetLength, intervals, timedRegEx) {
 
   trlfile<-paste("\"",tempfile("automaton",fileext = ".rl"),"\"", sep = "")
   tcppfile<-tempfile("automaton",fileext = ".cpp")
-  tregex<-paste("\"",automatonStr,"\"",sep = "")
+  tregex<-paste("\"",timedRegEx,"\"",sep = "")
 
+  # Generate the timed automaton for the timed regular expression
   headerLoc<-paste(find.package("automatonR"),"/exec/automaton.h",sep = "")
   pyscript<-paste(find.package("automatonR"), "/exec/parse.py",sep = "")
-  try(system(paste("python",pyscript, tregex, trlfile,tcppfile, headerLoc), ignore.stdout = TRUE))
+  try(system(paste("python",pyscript, tregex, trlfile,tcppfile, headerLoc), ignore.stdout = FALSE))
+
+  # Compile the cpp code for the generated automaton
   sourceCpp(tcppfile)
+
+  # Extract the automaton
   automatonPtr<-getAutomatonPointer()
 
   result = processTrace_rcpp(traceTimes, traceEvents, alphabetLength, intervals, automatonPtr)

@@ -17,8 +17,8 @@ processTrace(traceTimes, traceEvents, alphabetLength, intervals,
 \item{intervals}{DataFrame with two columns, start and end,
 corresponding to the intervals used in the regular expression.}
 
-\item{automaton}{Integer id of automaton being used. Should be 0 for parser generated automaton.
-Ids greater than 0 are used mainly for testing.}
+\item{timedRegEx}{String containing the timed-regular expression template
+to be used for mining.
 }
 \value{
 List of two nd-arrays.
