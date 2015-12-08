@@ -4,8 +4,7 @@
 \alias{processTrace}
 \title{Process timed regex}
 \usage{
-processTrace(traceTimes, traceEvents, alphabetLength, intervals,
-  automaton = 0)
+processTrace(traceTimes, traceEvents, alphabetLength, intervals, timedRegEx)
 }
 \arguments{
 \item{traceTimes}{Numeric vector of timestamps.}
@@ -17,8 +16,7 @@ processTrace(traceTimes, traceEvents, alphabetLength, intervals,
 \item{intervals}{DataFrame with two columns, start and end,
 corresponding to the intervals used in the regular expression.}
 
-\item{timedRegEx}{String containing the timed-regular expression template
-to be used for mining.
+\item{timedRegEx}{the timed-regular expression template}
 }
 \value{
 List of two nd-arrays.

@@ -10,7 +10,6 @@ require(Rcpp)
 #' @param intervals DataFrame with two columns, start and end,
 #'  corresponding to the intervals used in the regular expression.
 #' @param timedRegEx the timed-regular expression template
-#'
 #' @return List of two nd-arrays.
 #' Success and Reset are counters values for each alphabet configuration.
 processTrace = function(traceTimes, traceEvents, alphabetLength, intervals, timedRegEx) {
