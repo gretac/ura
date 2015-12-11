@@ -42,10 +42,10 @@ List processTrace_rcpp(const NumericVector traceTimes,
                   SEXP automaton) {
 
     // Instantiate Correct Automaton
-  Rcpp::XPtr< Automaton > a(automaton);
-
+  Rcpp::XPtr< Automaton > a(automaton);  
+  
   //unique_ptr<Automaton> a = automatonFactory(automaton);
-
+  
   int dimCount = a->dimCount;
   int clockCount = a->clockCount;
 
@@ -60,14 +60,8 @@ List processTrace_rcpp(const NumericVector traceTimes,
   if (startInterval.length() != endInterval.length()) {
     stop("number of start intervals not equal to number of end intervals");
   }
-  if(clockCount != 0){
-    if (startInterval.length() != clockCount) {
-      stop("Number of supplied time intervals does not match number of clocks");
-    }
-    if(startInterval[0]== -1 || endInterval[0] == -1){
-      stop("Number of supplied time intervals does not match number of clocks");
-    }
-
+  if (startInterval.length() != clockCount) {
+    stop("Number of supplied time intervals does not match number of clocks");
   }
   if (alphabetLength < dimCount) {
     stop("alphabetLength is less than number of dimensions in automaton");

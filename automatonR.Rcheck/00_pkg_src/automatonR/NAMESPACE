@@ -1,0 +1,4 @@
+exportPattern("^[[:alpha:]]+")
+import(Rcpp)
+import(testthat)
+useDynLib(automatonR)

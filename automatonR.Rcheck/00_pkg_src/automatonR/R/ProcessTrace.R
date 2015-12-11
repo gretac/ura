@@ -23,12 +23,6 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, intervals, time
   pyscript<-paste(find.package("automatonR"), "/exec/parse.py",sep = "")
   try(system(paste("python",pyscript, tregex, trlfile,tcppfile, headerLoc), ignore.stdout = FALSE))
 
-  if(is.null(intervals$start)){
-    intervals["start"] = c(-1)
-  }
-  if(is.null(intervals$end)){
-    intervals["end"] = c(-1)
-  }
   # Compile the cpp code for the generated automaton
   sourceCpp(tcppfile)
 

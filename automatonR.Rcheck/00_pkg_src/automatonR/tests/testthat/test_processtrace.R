@@ -1,23 +1,6 @@
 library(automatonR)
 
 context("Automaton Testing")
-test_that("Regex: (1.0)+ ", {
-
-  traceTimes = c(0, 2, 2, 6, 12, 13, 18, 20, 23, 26)
-  traceEvents = c(1, 2, 2, 2, 3, 2, 3, 3, 2, 2)
-  alphabetLength = 3
-  startIntervals = c()
-  endIntervals = c()
-  intervals = list("start" = startIntervals, "end" = endIntervals)
-
-  r = processTrace(traceTimes, traceEvents, alphabetLength, intervals, "(1.0)+")
-
-  e_success = array(c(NA, 1, 1, 0, NA, 2, 0 ,1 , NA), c(3, 3))
-  e_reset = array(c(NA, 5, 2, 4, NA, 3, 2, 6, NA), c(3, 3))
-
-  expect_equal(e_success, r$success)
-  expect_equal(e_reset, r$reset)
-})
 
 test_that("Regex: (1.<0+>)+ ", {
 
@@ -30,7 +13,7 @@ test_that("Regex: (1.<0+>)+ ", {
 
   r = processTrace(traceTimes, traceEvents, alphabetLength, intervals, "(1.<0+>)+")
 
-  e_success = array(c(NA, 2, 0, 0, NA, 1, 0, 0, NA), c(3, 3))
+  e_success = array(c(NA, 3, 0, 0, NA, 1, 0, 0, NA), c(3, 3))
   e_reset = array(c(NA, 4, 3, 4, NA, 4, 2, 7, NA), c(3, 3))
 
   expect_equal(e_success, r$success)

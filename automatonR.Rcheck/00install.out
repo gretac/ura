@@ -1,0 +1,25 @@
+* installing *source* package ‘automatonR’ ...
+** libs
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c RcppExports.cpp -o RcppExports.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c factory.cpp -o factory.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c processtrace.cpp -o processtrace.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c test1.cpp -o test1.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c test2.cpp -o test2.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c test3.cpp -o test3.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c test4.cpp -o test4.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c test5.cpp -o test5.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c test6.cpp -o test6.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c test7.cpp -o test7.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/y2joshi/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++0x -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c test8.cpp -o test8.o
+g++ -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -Wl,-z,relro -o automatonR.so RcppExports.o factory.o processtrace.o test1.o test2.o test3.o test4.o test5.o test6.o test7.o test8.o -L/usr/lib/R/lib -lR
+installing to /home/y2joshi/ura/automatonR.Rcheck/automatonR/libs
+** R
+** exec
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded
+* DONE (automatonR)
