@@ -4,6 +4,7 @@ global_beginterval_list = []
 global_endinterval_list = []
 def parser(input):
     global global_clock_counter
+
     expressions = ["("]
     i = 0
 
@@ -35,7 +36,10 @@ def create_new_expression(input, i, counter, new_exp):
 
     '''
     global global_clock_counter
+    global global_beginterval_list
+    global global_endinterval_list
     new_exp += "("
+    interval_str=""
     while i < len(input):
         current_char = input[i]
         if current_char == '<':
@@ -46,7 +50,11 @@ def create_new_expression(input, i, counter, new_exp):
             global_clock_counter += 1
             return (new_exp, i, counter-1)
         elif current_char == '[':
-
+            while current_char != ']':
+                interval_str += current_char
+			global_beginterval_list.append(interval_str[0])
+			global_endinterval_list.append(interval_str[1])
+			interval_str=""
         else:
             new_exp += current_char
         i += 1
@@ -73,6 +81,7 @@ def check_input(input):
 
     opening_count = 0
     closing_count = 0
+    sq_bracket_count = 0
     alphabets = {}
 
     for char in input:
@@ -85,7 +94,11 @@ def check_input(input):
         if char.isdigit():
             if int(char) not in alphabets.keys():
                 alphabets[int(char)] = 1
-
+        if char == '[':        
+			sq_bracket_count+=1
+		if char == ']':
+			sq_bracket_count-=1
+			
     alphabets_list = sorted(alphabets.keys())
     global_alphabet_counter = len(alphabets_list)
 
@@ -98,7 +111,10 @@ def check_input(input):
     for i in range(1,global_alphabet_counter):
         if alphabets_list[i] - alphabets_list[i-1] > 1:
             raise ValueError("The alphabet must start with 0 and increment by 1.")
-
+	
+	if sq_bracket_count != 0:
+		raise ValueError("Each '[' must have a matching ']'")
+	
     if not (opening_count == closing_count):
         raise ValueError("Each '<' must have a matching '>'")
 
