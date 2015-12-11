@@ -57,9 +57,7 @@ class Automaton {
     virtual void computeNextState(int *currentState,
                       vector<double> *currentTimes,
                       int *succ, int *reset,
-                      const int nextSymbol, const double newTime,
-                      const NumericVector &startInterval,
-                      const NumericVector &endInterval)=0;
+                      const int nextSymbol, const double newTime)=0;
 };
 
 // Automaton Factory
@@ -72,12 +70,10 @@ public:
   void computeNextState(int *currentState,
                       vector<double> *currentTimes,
                       int *succ, int *reset,
-                      const int nextSymbol, const double newTime,
-                      const NumericVector &startInterval,
-                      const NumericVector &endInterval);
+                      const int nextSymbol, const double newTime);
 };
 
-// Test Automatons
+/* Test Automatons
 class Test1: public Automaton {
 public:
   Test1();
@@ -172,6 +168,6 @@ List processTrace_rcpp(const NumericVector traceTimes,
                   const int alphabetLength,
                   const IntegerVector intervals,
                   const int automaton);
-
+*/
 #endif
 

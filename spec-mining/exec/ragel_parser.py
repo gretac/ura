@@ -50,11 +50,15 @@ def create_new_expression(input, i, counter, new_exp):
             global_clock_counter += 1
             return (new_exp, i, counter-1)
         elif current_char == '[':
+			i+=1
             while current_char != ']':
+				current_char = input[i]
                 interval_str += current_char
-			global_beginterval_list.append(interval_str[0])
-			global_endinterval_list.append(interval_str[1])
-			interval_str=""
+                i += 1
+            ainterval = interval_str.split(",")    
+			global_beginterval_list.append(ainterval[0])
+			global_endinterval_list.append(ainterval[1])
+			interval_str = ""
         else:
             new_exp += current_char
         i += 1
@@ -144,20 +148,35 @@ def create_action_ct(file, counter):
     file.write("    action CT" + str(counter) + " { CT(" + str(counter) + ") }\n" )
     return
 
-
+def writeIntervalList(aList, f):
+	i = 0
+	while i < len(aList):
+	    f.write(aList[i])
+	    i += 1
+	    if i != len(aList)-1:
+		    f.write(",")
+		else
+		    f.write(");\n")	
+		    
 def write_to_file(input, temprl, headerLoc):
     '''
         Creates a custom automaton.rl ragel file used by the AutomatonR Package
 
         input: a timed regular expression
     '''
+    global global_beginterval_list
+    global global_endinterval_list
     f = open(temprl, "w+")
     ragel_expression = parser(input)
 
     f.write("#include \"" + str(headerLoc) + "\"\n\n")
-    f.write("void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime, const NumericVector &startInterval, const NumericVector &endInterval) {")
-
+    f.write("void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime) {")		
     f.write("%%{\n")
+    f.write("const NumericVector startInterval = NumericVector::create(")
+    writeIntervalList(global_beginterval_list,f)
+	f.write("const NumericVector endInterval   = NumericVector::create(")
+    writeIntervalList(global_endinterval_list,f)
+    			
     f.write("    machine foo;\n\n")
     f.write("    action R { (*reset)++; STATE(foo_start); RT return; }\n")
     f.write("    action U { (*succ)++; }\n")
