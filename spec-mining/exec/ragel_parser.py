@@ -1,6 +1,7 @@
 global_clock_counter = 0 # counter for the clocks: increments when '>' symbol is detected
 global_alphabet_counter = 0 # counter for the number of alphabets
-
+global_beginterval_list = []
+global_endinterval_list = []
 def parser(input):
     global global_clock_counter
     expressions = ["("]
@@ -44,6 +45,8 @@ def create_new_expression(input, i, counter, new_exp):
             new_exp = embed_actions(new_exp, counter)
             global_clock_counter += 1
             return (new_exp, i, counter-1)
+        elif current_char == '[':
+
         else:
             new_exp += current_char
         i += 1
@@ -164,12 +167,12 @@ def write_to_file(input, temprl, headerLoc):
     f.write("   dimCount = " + str(global_alphabet_counter) + ";\n")
     f.write("   clockCount = " + str(global_clock_counter) + ";\n")
     f.write("}\n")
-    
+
     f.write("// [[Rcpp::export]]\n");
     f.write("Rcpp::XPtr<Automaton> getAutomatonPointer(){\n")
     f.write("Automaton *ptr = new ParserAutomaton();\n")
     f.write("Rcpp::XPtr< Automaton > p(ptr, true);\n")
     f.write("return p;\n")
-    f.write("}") 
+    f.write("}")
 
     return
