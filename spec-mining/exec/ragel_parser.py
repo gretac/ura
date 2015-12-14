@@ -7,14 +7,30 @@ def parser(input):
 
     expressions = ["("]
     i = 0
-
+    global global_beginterval_list
+    global global_endinterval_list
+    interval_str=""
     check_input(input)
-
+    
     while i < len(input):
         current_char = input[i]
         if current_char == '<':
             exp, i, counter = create_new_expression(input, i + 1, global_clock_counter, "")
             expressions.append(exp)
+        elif current_char == '[':
+            i+=1
+            while current_char != ']':
+		current_char = input[i]
+		if current_char == ']':
+                    break
+                interval_str += current_char
+                i += 1
+            ainterval = interval_str.split(",")
+            interval_str = ""
+            print(ainterval[0],ainterval[1])
+	    global_beginterval_list.append(ainterval[0])
+	    global_endinterval_list.append(ainterval[1])
+	    interval_str = ""    
         else:
             expressions.append(current_char)
         i += 1
@@ -50,15 +66,19 @@ def create_new_expression(input, i, counter, new_exp):
             global_clock_counter += 1
             return (new_exp, i, counter-1)
         elif current_char == '[':
-			i+=1
+            i+=1
             while current_char != ']':
-				current_char = input[i]
+		current_char = input[i]
+		if current_char == ']':
+                    break
                 interval_str += current_char
                 i += 1
-            ainterval = interval_str.split(",")    
-			global_beginterval_list.append(ainterval[0])
-			global_endinterval_list.append(ainterval[1])
-			interval_str = ""
+            ainterval = interval_str.split(",")
+            interval_str = ""
+            print(ainterval[0],ainterval[1])
+	    global_beginterval_list.append(ainterval[0])
+	    global_endinterval_list.append(ainterval[1])
+	    interval_str = ""
         else:
             new_exp += current_char
         i += 1
@@ -87,22 +107,27 @@ def check_input(input):
     closing_count = 0
     sq_bracket_count = 0
     alphabets = {}
-
+    intervalMode = False
+    
     for char in input:
         if char == '<':
             opening_count += 1
         if char == '>':
             closing_count += 1
+        if char == '[':
+            intervalMode = True
+        if char == ']':
+            intervalMode = False
         if char.isalpha():
             raise ValueError("The alphabet must be integers only")
-        if char.isdigit():
+        if char.isdigit() and (not intervalMode):
             if int(char) not in alphabets.keys():
                 alphabets[int(char)] = 1
-        if char == '[':        
-			sq_bracket_count+=1
-		if char == ']':
-			sq_bracket_count-=1
-			
+        if char == '[':
+            sq_bracket_count+=1
+	if char == ']':
+	    sq_bracket_count-=1
+
     alphabets_list = sorted(alphabets.keys())
     global_alphabet_counter = len(alphabets_list)
 
@@ -115,10 +140,10 @@ def check_input(input):
     for i in range(1,global_alphabet_counter):
         if alphabets_list[i] - alphabets_list[i-1] > 1:
             raise ValueError("The alphabet must start with 0 and increment by 1.")
-	
+
 	if sq_bracket_count != 0:
-		raise ValueError("Each '[' must have a matching ']'")
-	
+	    raise ValueError("Each '[' must have a matching ']'")
+
     if not (opening_count == closing_count):
         raise ValueError("Each '<' must have a matching '>'")
 
@@ -148,16 +173,12 @@ def create_action_ct(file, counter):
     file.write("    action CT" + str(counter) + " { CT(" + str(counter) + ") }\n" )
     return
 
-def writeIntervalList(aList, f):
-	i = 0
-	while i < len(aList):
-	    f.write(aList[i])
-	    i += 1
-	    if i != len(aList)-1:
-		    f.write(",")
-		else
-		    f.write(");\n")	
-		    
+def writeIntervalList(aList, f, lstName):
+    i = 0
+    while i < len(aList):
+        f.write(lstName +".push_back(" + aList[i] + ");\n")
+  	i += 1
+
 def write_to_file(input, temprl, headerLoc):
     '''
         Creates a custom automaton.rl ragel file used by the AutomatonR Package
@@ -170,13 +191,16 @@ def write_to_file(input, temprl, headerLoc):
     ragel_expression = parser(input)
 
     f.write("#include \"" + str(headerLoc) + "\"\n\n")
-    f.write("void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime) {")		
+    
+    f.write("ParserAutomaton::initIntervals() {\n")
+    writeIntervalList(global_beginterval_list, f, "startInterval")
+    writeIntervalList(global_endinterval_list, f, "endInterval")
+    f.write("}\n")
+    
+    f.write("void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime) {\n")
+
     f.write("%%{\n")
-    f.write("const NumericVector startInterval = NumericVector::create(")
-    writeIntervalList(global_beginterval_list,f)
-	f.write("const NumericVector endInterval   = NumericVector::create(")
-    writeIntervalList(global_endinterval_list,f)
-    			
+
     f.write("    machine foo;\n\n")
     f.write("    action R { (*reset)++; STATE(foo_start); RT return; }\n")
     f.write("    action U { (*succ)++; }\n")

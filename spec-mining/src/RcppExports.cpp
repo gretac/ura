@@ -6,17 +6,16 @@
 using namespace Rcpp;
 
 // processTrace_rcpp
-List processTrace_rcpp(const NumericVector traceTimes, const IntegerVector traceEvents, const int alphabetLength, const List intervals, SEXP automaton);
-RcppExport SEXP automatonR_processTrace_rcpp(SEXP traceTimesSEXP, SEXP traceEventsSEXP, SEXP alphabetLengthSEXP, SEXP intervalsSEXP, SEXP automatonSEXP) {
+List processTrace_rcpp(const NumericVector traceTimes, const IntegerVector traceEvents, const int alphabetLength, SEXP automaton);
+RcppExport SEXP automatonR_processTrace_rcpp(SEXP traceTimesSEXP, SEXP traceEventsSEXP, SEXP alphabetLengthSEXP, SEXP automatonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericVector >::type traceTimes(traceTimesSEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type traceEvents(traceEventsSEXP);
     Rcpp::traits::input_parameter< const int >::type alphabetLength(alphabetLengthSEXP);
-    Rcpp::traits::input_parameter< const List >::type intervals(intervalsSEXP);
     Rcpp::traits::input_parameter< SEXP >::type automaton(automatonSEXP);
-    __result = Rcpp::wrap(processTrace_rcpp(traceTimes, traceEvents, alphabetLength, intervals, automaton));
+    __result = Rcpp::wrap(processTrace_rcpp(traceTimes, traceEvents, alphabetLength, automaton));
     return __result;
 END_RCPP
 }

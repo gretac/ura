@@ -38,33 +38,30 @@ void incrementPermCounter(vector<int>* counter, int base){
 List processTrace_rcpp(const NumericVector traceTimes,
                   const IntegerVector traceEvents,
                   const int alphabetLength,
-                  const List intervals,
                   SEXP automaton) {
 
     // Instantiate Correct Automaton
   Rcpp::XPtr< Automaton > a(automaton);
-
+  a->initIntervals();
   //unique_ptr<Automaton> a = automatonFactory(automaton);
 
   int dimCount = a->dimCount;
   int clockCount = a->clockCount;
 
-  // Unpack Time Intervals
-  NumericVector startInterval = intervals["start"];
-  NumericVector endInterval = intervals["end"];
-
   // Input Checking
   if (traceTimes.length() != traceEvents.length()) {
       stop("tracesTimes length not equal to traceEvents length");
   }
-  if (startInterval.length() != endInterval.length()) {
-    stop("number of start intervals not equal to number of end intervals");
-  }
+
   if(clockCount != 0){
-    if (startInterval.length() != clockCount) {
+
+    if (a->startInterval.length() != a->endInterval.length()) {
+      stop("number of start intervals not equal to number of end intervals");
+    }
+    if (a->startInterval.length() != clockCount) {
       stop("Number of supplied time intervals does not match number of clocks");
     }
-    if(startInterval[0]== -1 || endInterval[0] == -1){
+    if((a->startInterval)[0]== -1 || (a->endInterval)[0] == -1){
       stop("Number of supplied time intervals does not match number of clocks");
     }
 
@@ -83,7 +80,7 @@ List processTrace_rcpp(const NumericVector traceTimes,
   fill(symbols.begin(), symbols.end(), 1);
 
   // Initialize time storage
-  vector< vector<double> > times(permCount, vector<double>(startInterval.length(), 0.0));
+  vector< vector<double> > times(permCount, vector<double>(a->startInterval.length(), 0.0));
 
   // Initialize success and reset counters
   IntegerVector succ(permCount);
@@ -143,8 +140,7 @@ List processTrace_rcpp(const NumericVector traceTimes,
                        &(times[permMap[iLoc][x].first]),
                        &(succ(permMap[iLoc][x].first)),
                        &(reset(permMap[iLoc][x].first)),
-                       permMap[iLoc][x].second, iTime,
-                       startInterval, endInterval);
+                       permMap[iLoc][x].second, iTime);
     }
 
   }

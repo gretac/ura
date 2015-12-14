@@ -1,4 +1,4 @@
-	// [[Rcpp::plugins(cpp11)]]
+  // [[Rcpp::plugins(cpp11)]]
 #ifndef AUTOMATON_H
 #define AUTOMATON_H
 
@@ -54,10 +54,15 @@ class Automaton {
   public:
     int dimCount;
     int clockCount;
+    NumericVector startInterval, endInterval;
+    Automaton(){
+    }
+    virtual void initIntervals() = 0;
     virtual void computeNextState(int *currentState,
                       vector<double> *currentTimes,
                       int *succ, int *reset,
                       const int nextSymbol, const double newTime)=0;
+    virtual ~Automaton(){}
 };
 
 // Automaton Factory
@@ -71,6 +76,9 @@ public:
                       vector<double> *currentTimes,
                       int *succ, int *reset,
                       const int nextSymbol, const double newTime);
+  void initIntervals();
+  virtual ~ParserAutomaton(){
+  }
 };
 
 /* Test Automatons
@@ -170,4 +178,3 @@ List processTrace_rcpp(const NumericVector traceTimes,
                   const int automaton);
 */
 #endif
-
