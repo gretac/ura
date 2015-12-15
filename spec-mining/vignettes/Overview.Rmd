@@ -26,7 +26,7 @@ alphabetLength = 2
 
 # The last parameter here is used for the hard coded automaton: (<0.1> | <1.0>)+
 # If using the parser generated automaton, leave parameter blank
-result = processTrace(traceTimes, traceEvents, alphabetLength, "(<0.1> | <1.0>)+")
+result = processTrace(traceTimes, traceEvents, alphabetLength, "(<0.1>[0,2] | <1.0>[0,3])+")
 result
 ```
 
