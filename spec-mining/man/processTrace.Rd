@@ -4,7 +4,7 @@
 \alias{processTrace}
 \title{Process timed regex}
 \usage{
-processTrace(traceTimes, traceEvents, alphabetLength, intervals, timedRegEx)
+processTrace(traceTimes, traceEvents, alphabetLength, timedRegEx)
 }
 \arguments{
 \item{traceTimes}{Numeric vector of timestamps.}
@@ -12,9 +12,6 @@ processTrace(traceTimes, traceEvents, alphabetLength, intervals, timedRegEx)
 \item{traceEvents}{Integer vector of corresponding events.}
 
 \item{alphabetLength}{Integer greater than zero indicating number of unique events.}
-
-\item{intervals}{DataFrame with two columns, start and end,
-corresponding to the intervals used in the regular expression.}
 
 \item{timedRegEx}{the timed-regular expression template}
 }
