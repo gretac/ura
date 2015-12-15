@@ -27,7 +27,7 @@ def parser(input):
                 i += 1
             ainterval = interval_str.split(",")
             interval_str = ""
-            print(ainterval[0],ainterval[1])
+            #print(ainterval[0],ainterval[1])
 	    global_beginterval_list.append(ainterval[0])
 	    global_endinterval_list.append(ainterval[1])
 	    interval_str = ""    
@@ -75,7 +75,7 @@ def create_new_expression(input, i, counter, new_exp):
                 i += 1
             ainterval = interval_str.split(",")
             interval_str = ""
-            print(ainterval[0],ainterval[1])
+            #print(ainterval[0],ainterval[1])
 	    global_beginterval_list.append(ainterval[0])
 	    global_endinterval_list.append(ainterval[1])
 	    interval_str = ""
@@ -192,7 +192,7 @@ def write_to_file(input, temprl, headerLoc):
 
     f.write("#include \"" + str(headerLoc) + "\"\n\n")
     
-    f.write("ParserAutomaton::initIntervals() {\n")
+    f.write("void ParserAutomaton::initIntervals() {\n")
     writeIntervalList(global_beginterval_list, f, "startInterval")
     writeIntervalList(global_endinterval_list, f, "endInterval")
     f.write("}\n")
