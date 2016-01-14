@@ -1,4 +1,23 @@
 require(Rcpp)
+
+#' Create Automaton from timed-regex
+#'
+#'
+#' @param create Timed-automaton from timed-regular expressions
+#' @return Nothing
+
+createTimedAutomaton = function(timedRegEx) {
+  trlfile<-paste("\"",tempfile("automaton",fileext = ".rl"),"\"", sep = "")
+  tcppfile<-tempfile("automaton",fileext = ".cpp")
+  tregex<-paste("\"",timedRegEx,"\"",sep = "")
+
+  # Generate the timed automaton for the timed regular expression
+  headerLoc<-paste(find.package("automatonR"),"/exec/automaton.h",sep = "")
+  pyscript<-paste(find.package("automatonR"), "/exec/parse.py",sep = "")
+  try(system(paste("python",pyscript, tregex, trlfile,tcppfile, headerLoc), ignore.stdout = FALSE))
+
+  cat(trlfile,tcppfile,sep = ",")
+}
 #' Process timed regex
 #'
 #' Processes the trace on a given timed regex, returning number of successes and resets
@@ -38,8 +57,8 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
   # Transpose to make indicies more intuitive
   success = aperm(result$success, c(length(dim(result$success)):1))
   reset = aperm(result$reset, c(length(dim(result$reset)):1))
-  unlink(trlfile)
-  unlink(tcppfile)
+  #unlink(trlfile)
+  #unlink(tcppfile)
   return (list("success"=success,"reset"=reset))
 
 }

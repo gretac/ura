@@ -18,7 +18,7 @@ test_that("Regex: (1.0)+ ", {
 
 test_that("Regex: (1.<0+>)+ ", {
 
-  traceTimes = c(0, 2, 2, 6, 12, 13, 18, 20, 23, 26)
+  traceTimes = c(0, 2, 3, 6, 12, 13, 18, 20, 23, 24)
   traceEvents = c(1, 2, 2, 2, 3, 2, 3, 3, 2, 2)
   alphabetLength = 3
 

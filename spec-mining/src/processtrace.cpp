@@ -111,9 +111,9 @@ List processTrace_rcpp(const NumericVector traceTimes,
       #endif
       for (int x=0; x < dimCount; x++) {
         permMap[perm[x]].push_back(make_pair(i, x));
-        #ifdef DEBUG
+        /*#ifdef DEBUG
           std::cout<<x<<"="<<perm[x] << ":"<<i<<" "<<std::endl;
-        #endif
+        #endif*/
       }
     }
 
@@ -131,18 +131,28 @@ List processTrace_rcpp(const NumericVector traceTimes,
     // iLoc is the current event
 
     iTime= traceTimes(i);
+    if(iLoc < dimCount){
+      for(int x=0; x < permMap[iLoc].size(); x++) {
 
-    for(int x=0; x < permMap[iLoc].size(); x++) {
-
-      //Update automata states and 'success/reset' counters
-      //for permutations which contain event marked with `iloc'
-      a->computeNextState(&(symbols(permMap[iLoc][x].first)),
-                       &(times[permMap[iLoc][x].first]),
-                       &(succ(permMap[iLoc][x].first)),
-                       &(reset(permMap[iLoc][x].first)),
-                       permMap[iLoc][x].second, iTime);
-    }
-
+        //Update automata states and 'success/reset' counters
+        //for permutations which contain event marked with `iloc'
+          a->computeNextState(&(symbols(permMap[iLoc][x].first)),
+                           &(times[permMap[iLoc][x].first]),
+                           &(succ(permMap[iLoc][x].first)),
+                           &(reset(permMap[iLoc][x].first)),
+                           permMap[iLoc][x].second, iTime);
+        }
+     }else{
+        for(int i = 0; i < permMap.size(); i++){
+          for(int j = 0 ; j < permMap.at(i).size(); j++){
+            a->computeNextState(&(symbols(permMap[i][j].first)),
+                           &(times[permMap[i][j].first]),
+                           &(succ(permMap[i][j].first)),
+                           &(reset(permMap[i][j].first)),
+                           dimCount, iTime);
+          }
+        }
+     }
   }
 
   IntegerVector dims(dimCount, alphabetLength);

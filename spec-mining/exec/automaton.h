@@ -1,4 +1,4 @@
-  // [[Rcpp::plugins(cpp11)]]
+// [[Rcpp::plugins(cpp11)]]
 #ifndef AUTOMATON_H
 #define AUTOMATON_H
 

@@ -151,7 +151,7 @@ def check_input(input):
 
 
 def embed_actions(exp, counter):
-    return exp + ")" + " @CT" + str(counter) + " >~ST" + str(counter)
+    return exp + ")" + " @CT" + str(counter) + " >*ST" + str(counter)
 
 
 def create_actions(file, counter):
