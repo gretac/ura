@@ -57,8 +57,8 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
   # Transpose to make indicies more intuitive
   success = aperm(result$success, c(length(dim(result$success)):1))
   reset = aperm(result$reset, c(length(dim(result$reset)):1))
-  #unlink(trlfile)
-  #unlink(tcppfile)
+  unlink(trlfile)
+  unlink(tcppfile)
   return (list("success"=success,"reset"=reset))
 
 }

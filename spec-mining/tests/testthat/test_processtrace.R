@@ -1,6 +1,16 @@
 library(automatonR)
 
 context("Automaton Testing")
+test_that("Regex: (0.0.^(0).^(0))", {
+  traceTimes = c(0, 2, 4, 5)
+  traceEvents = c(1, 1 , 2, 2)
+  alphabetLength = 1
+  r = processTrace(traceTimes, traceEvents, alphabetLength, "(0.0.^(0).^(0))")
+  e_success = array(c(1))
+  e_reset = array(c(0))
+  expect_equal(e_success, r$success)
+  expect_equal(e_reset, r$reset)
+})
 test_that("Regex: (1.0)+ ", {
 
   traceTimes = c(0, 2, 2, 6, 12, 13, 18, 20, 23, 26)

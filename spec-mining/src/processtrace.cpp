@@ -77,7 +77,7 @@ List processTrace_rcpp(const NumericVector traceTimes,
 
   // Initialize state storage
   IntegerVector symbols(permCount);
-  fill(symbols.begin(), symbols.end(), 1);
+  fill(symbols.begin(), symbols.end(), 0);
 
   // Initialize time storage
   vector< vector<double> > times(permCount, vector<double>(a->startInterval.length(), 0.0));
@@ -85,6 +85,8 @@ List processTrace_rcpp(const NumericVector traceTimes,
   // Initialize success and reset counters
   IntegerVector succ(permCount);
   IntegerVector reset(permCount);
+  fill(succ.begin(), succ.end(), 0);
+  fill(reset.begin(), reset.end(), 0);
 
   // Initialize map
   // Pair is perm, alpha placement
@@ -103,12 +105,12 @@ List processTrace_rcpp(const NumericVector traceTimes,
       reset(i) = NA_INTEGER;
     } else {
 
-      #ifdef DEBUG
-        for (int x=0; x < dimCount; x++) {
-          std::cout<<perm[x]<<" ";
-        }
-        std::cout<<std::endl;
-      #endif
+//       #ifdef DEBUG
+//         for (int x=0; x < dimCount; x++) {
+//           std::cout<<perm[x]<<" ";
+//         }
+//         std::cout<<std::endl;
+//       #endif
       for (int x=0; x < dimCount; x++) {
         permMap[perm[x]].push_back(make_pair(i, x));
         /*#ifdef DEBUG
@@ -131,7 +133,7 @@ List processTrace_rcpp(const NumericVector traceTimes,
     // iLoc is the current event
 
     iTime= traceTimes(i);
-    if(iLoc < dimCount){
+    if(iLoc < alphabetLength){
       for(int x=0; x < permMap[iLoc].size(); x++) {
 
         //Update automata states and 'success/reset' counters
@@ -141,18 +143,40 @@ List processTrace_rcpp(const NumericVector traceTimes,
                            &(succ(permMap[iLoc][x].first)),
                            &(reset(permMap[iLoc][x].first)),
                            permMap[iLoc][x].second, iTime);
-        }
-     }else{
+#ifdef DEBUG
+  std::cerr<<permMap[iLoc][x].first<<",succ="
+           <<succ(permMap[iLoc][x].first)<<",reset="
+           <<reset(permMap[iLoc][x].first)<<",dimension="
+           <<permMap[iLoc][x].second << ",event="
+           <<iLoc+1<< std::endl;
+#endif
+      }
+#ifdef DEBUG
+  std::cerr<<"*************************"<< std::endl;
+#endif
+    }else{
         for(int i = 0; i < permMap.size(); i++){
           for(int j = 0 ; j < permMap.at(i).size(); j++){
             a->computeNextState(&(symbols(permMap[i][j].first)),
                            &(times[permMap[i][j].first]),
                            &(succ(permMap[i][j].first)),
                            &(reset(permMap[i][j].first)),
-                           dimCount, iTime);
+                           alphabetLength, iTime);
+#ifdef DEBUG
+  std::cerr<<permMap[i][j].first<<",succ="
+           <<succ(permMap[i][j].first)<<",reset="
+           <<reset(permMap[i][j].first)<<",dimension="
+           <<alphabetLength<< ",event="
+           <<iLoc+1 << std::endl;
+  std::cerr<<"*************************"<< std::endl;
+#endif
+
           }
-        }
-     }
+      }
+    }
+#ifdef DEBUG
+  std::cerr<<"*************************"<< std::endl;
+#endif
   }
 
   IntegerVector dims(dimCount, alphabetLength);

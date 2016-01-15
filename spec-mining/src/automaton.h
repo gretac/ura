@@ -22,6 +22,8 @@ using namespace std;
   (*currentTimes)[i] = newTime;                                  \
 }                                                               \
 
+//#define PRINTSUCC std::cerr<<"Incr Succ"<<std::endl;
+
 #define ST(x) (*currentTimes)[x] = newTime;
 //Do a automaton reset if an event does not meet the interval timelines
 #define CT(x)   if((newTime - (*currentTimes)[x]  > endInterval(x)) || (newTime - (*currentTimes)[x] < startInterval(x))) { \
@@ -61,7 +63,7 @@ class Automaton {
     virtual void computeNextState(int *currentState,
                       vector<double> *currentTimes,
                       int *succ, int *reset,
-                      const int nextSymbol, const double newTime)=0;
+                      int nextSymbol, double newTime)=0;
     virtual ~Automaton(){}
 };
 
@@ -75,7 +77,7 @@ public:
   void computeNextState(int *currentState,
                       vector<double> *currentTimes,
                       int *succ, int *reset,
-                      const int nextSymbol, const double newTime);
+                      int nextSymbol, double newTime);
   void initIntervals();
   virtual ~ParserAutomaton(){
   }

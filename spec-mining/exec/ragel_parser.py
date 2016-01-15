@@ -11,7 +11,7 @@ def parser(input):
     global global_endinterval_list
     interval_str=""
     check_input(input)
-    
+
     while i < len(input):
         current_char = input[i]
         if current_char == '<':
@@ -30,7 +30,7 @@ def parser(input):
             #print(ainterval[0],ainterval[1])
 	    global_beginterval_list.append(ainterval[0])
 	    global_endinterval_list.append(ainterval[1])
-	    interval_str = ""    
+	    interval_str = ""
         else:
             expressions.append(current_char)
         i += 1
@@ -108,7 +108,7 @@ def check_input(input):
     sq_bracket_count = 0
     alphabets = {}
     intervalMode = False
-    
+
     for char in input:
         if char == '<':
             opening_count += 1
@@ -151,7 +151,7 @@ def check_input(input):
 
 
 def embed_actions(exp, counter):
-    return exp + ")" + " @CT" + str(counter) + " >*ST" + str(counter)
+    return exp + ")" + " @CT" + str(counter) + " >~ST" + str(counter)
 
 
 def create_actions(file, counter):
@@ -191,19 +191,19 @@ def write_to_file(input, temprl, headerLoc):
     ragel_expression = parser(input)
 
     f.write("#include \"" + str(headerLoc) + "\"\n\n")
-    
+
     f.write("void ParserAutomaton::initIntervals() {\n")
     writeIntervalList(global_beginterval_list, f, "startInterval")
     writeIntervalList(global_endinterval_list, f, "endInterval")
     f.write("}\n")
-    
+
     f.write("void ParserAutomaton::computeNextState(int *currentState, vector<double> *currentTimes, int *succ, int *reset, const int nextSymbol, const double newTime) {\n")
 
     f.write("%%{\n")
 
     f.write("    machine foo;\n\n")
     f.write("    action R { (*reset)++; STATE(foo_start); RT return; }\n")
-    f.write("    action U { (*succ)++; }\n")
+    f.write("    action U { (*succ)++;}\n")
     f.write("    action STEP { STATE(ftargs); return; }\n\n")
 
     create_actions(f, global_clock_counter)
