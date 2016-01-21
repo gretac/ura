@@ -214,7 +214,7 @@ def write_to_file(input, temprl, headerLoc):
     f.write("}%%\n\n")
 
     f.write("int cs = *currentState, dummy = 0, eof = -1;\n\n")
-
+    f.write("")
     f.write("%%{\n")
     f.write("    main := " + ragel_expression + "\n")
     f.write("    write init nocs;\n")
@@ -222,6 +222,13 @@ def write_to_file(input, temprl, headerLoc):
     f.write("}%%\n\n")
 
     f.write("return; \n\n}\n\n")
+
+    f.write("int ParserAutomaton::getStartState() {\n")
+    f.write("startState = %%{")
+    f.write("    write start;")
+    f.write("}%%\n")
+    f.write("}\n")
+
     f.write("ParserAutomaton::ParserAutomaton() {\n")
     f.write("   dimCount = " + str(global_alphabet_counter) + ";\n")
     f.write("   clockCount = " + str(global_clock_counter) + ";\n")

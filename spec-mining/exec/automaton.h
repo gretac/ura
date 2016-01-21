@@ -60,6 +60,7 @@ class Automaton {
     Automaton(){
     }
     virtual void initIntervals() = 0;
+    virtual int getStartState() = 0;
     virtual void computeNextState(int *currentState,
                       vector<double> *currentTimes,
                       int *succ, int *reset,
@@ -73,12 +74,14 @@ unique_ptr<Automaton> automatonFactory(const int automaton);
 // Parser Automaton
 class ParserAutomaton: public Automaton {
 public:
+  int startState;
   ParserAutomaton();
   void computeNextState(int *currentState,
                       vector<double> *currentTimes,
                       int *succ, int *reset,
                       const int nextSymbol, const double newTime);
   void initIntervals();
+  int  getStartState();
   virtual ~ParserAutomaton(){
   }
 };

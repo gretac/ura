@@ -1,4 +1,4 @@
-  // [[Rcpp::plugins(cpp11)]]
+// [[Rcpp::plugins(cpp11)]]
 #ifndef AUTOMATON_H
 #define AUTOMATON_H
 
@@ -19,7 +19,7 @@ using namespace std;
 #define AERROR     stop("Unsupported symbol");
 
 #define RT   for (int i = 0; i < (*currentTimes).size(); i++) { \
-  (*currentTimes)[i] = newTime;                                  \
+(*currentTimes)[i] = newTime;                                   \
 }                                                               \
 
 //#define PRINTSUCC std::cerr<<"Incr Succ"<<std::endl;
@@ -27,11 +27,11 @@ using namespace std;
 #define ST(x) (*currentTimes)[x] = newTime;
 //Do a automaton reset if an event does not meet the interval timelines
 #define CT(x)   if((newTime - (*currentTimes)[x]  > endInterval(x)) || (newTime - (*currentTimes)[x] < startInterval(x))) { \
-    (*reset)++;                                                        \
-    STATE(foo_start);                                                  \
-    RT                                                                 \
-    return;                                                            \
-  }                                                                    \
+(*reset)++;                                                                                                                 \
+STATE(foo_start);                                                                                                           \
+RT                                                                                                                          \
+  return;                                                                                                                   \
+}                                                                                                                           \
 
 
 // Automaton Ids (Ids > 0 are test automatons)
@@ -53,18 +53,20 @@ const short int TEST14_AUTOMATON = 14;
 const short int TEST15_AUTOMATON = 15;
 // Automaton Super Class
 class Automaton {
-  public:
-    int dimCount;
-    int clockCount;
-    NumericVector startInterval, endInterval;
-    Automaton(){
-    }
-    virtual void initIntervals() = 0;
-    virtual void computeNextState(int *currentState,
-                      vector<double> *currentTimes,
-                      int *succ, int *reset,
-                      int nextSymbol, double newTime)=0;
-    virtual ~Automaton(){}
+public:
+  int dimCount;
+  int clockCount;
+  NumericVector startInterval, endInterval;
+  int startState;
+  Automaton(){
+  }
+  virtual void initIntervals() = 0;
+  virtual int getStartState() = 0;
+  virtual void computeNextState(int *currentState,
+                                vector<double> *currentTimes,
+                                int *succ, int *reset,
+                                const int nextSymbol, const double newTime)=0;
+  virtual ~Automaton(){}
 };
 
 // Automaton Factory
@@ -73,12 +75,14 @@ unique_ptr<Automaton> automatonFactory(const int automaton);
 // Parser Automaton
 class ParserAutomaton: public Automaton {
 public:
+
   ParserAutomaton();
   void computeNextState(int *currentState,
-                      vector<double> *currentTimes,
-                      int *succ, int *reset,
-                      int nextSymbol, double newTime);
+                        vector<double> *currentTimes,
+                        int *succ, int *reset,
+                        const int nextSymbol, const double newTime);
   void initIntervals();
+  int  getStartState();
   virtual ~ParserAutomaton(){
   }
 };
@@ -86,87 +90,87 @@ public:
 /* Test Automatons
 class Test1: public Automaton {
 public:
-  Test1();
-  void computeNextState(int *currentState,
+Test1();
+void computeNextState(int *currentState,
                       vector<double> *currentTimes,
-                      int *succ, int *reset,
-                      const int nextSymbol, const double newTime,
-                      const NumericVector &startInterval,
-                      const NumericVector &endInterval);
+int *succ, int *reset,
+const int nextSymbol, const double newTime,
+const NumericVector &startInterval,
+const NumericVector &endInterval);
 };
 
 class Test2: public Automaton {
 public:
-  Test2();
-  void computeNextState(int *currentState,
-                        vector<double> *currentTimes,
-                        int *succ, int *reset,
-                        const int nextSymbol, const double newTime,
-                        const NumericVector &startInterval,
-                        const NumericVector &endInterval);
+Test2();
+void computeNextState(int *currentState,
+                      vector<double> *currentTimes,
+int *succ, int *reset,
+const int nextSymbol, const double newTime,
+const NumericVector &startInterval,
+const NumericVector &endInterval);
 };
 
 class Test3: public Automaton {
 public:
-  Test3();
-  void computeNextState(int *currentState,
-                        vector<double> *currentTimes,
-                        int *succ, int *reset,
-                        const int nextSymbol, const double newTime,
-                        const NumericVector &startInterval,
-                        const NumericVector &endInterval);
+Test3();
+void computeNextState(int *currentState,
+                      vector<double> *currentTimes,
+int *succ, int *reset,
+const int nextSymbol, const double newTime,
+const NumericVector &startInterval,
+const NumericVector &endInterval);
 };
 
 class Test4: public Automaton {
 public:
-  Test4();
-  void computeNextState(int *currentState,
-                        vector<double> *currentTimes,
-                        int *succ, int *reset,
-                        const int nextSymbol, const double newTime,
-                        const NumericVector &startInterval,
-                        const NumericVector &endInterval);
+Test4();
+void computeNextState(int *currentState,
+                      vector<double> *currentTimes,
+int *succ, int *reset,
+const int nextSymbol, const double newTime,
+const NumericVector &startInterval,
+const NumericVector &endInterval);
 };
 
 class Test5: public Automaton {
 public:
-  Test5();
-  void computeNextState(int *currentState,
-                        vector<double> *currentTimes,
-                        int *succ, int *reset,
-                        const int nextSymbol, const double newTime,
-                        const NumericVector &startInterval,
-                        const NumericVector &endInterval);
+Test5();
+void computeNextState(int *currentState,
+                      vector<double> *currentTimes,
+int *succ, int *reset,
+const int nextSymbol, const double newTime,
+const NumericVector &startInterval,
+const NumericVector &endInterval);
 };
 class Test6: public Automaton {
 public:
-  Test6();
-  void computeNextState(int *currentState,
-                        vector<double> *currentTimes,
-                        int *succ, int *reset,
-                        const int nextSymbol, const double newTime,
-                        const NumericVector &startInterval,
-                        const NumericVector &endInterval);
+Test6();
+void computeNextState(int *currentState,
+                      vector<double> *currentTimes,
+int *succ, int *reset,
+const int nextSymbol, const double newTime,
+const NumericVector &startInterval,
+const NumericVector &endInterval);
 };
 class Test7: public Automaton {
 public:
-  Test7();
-  void computeNextState(int *currentState,
-                        vector<double> *currentTimes,
-                        int *succ, int *reset,
-                        const int nextSymbol, const double newTime,
-                        const NumericVector &startInterval,
-                        const NumericVector &endInterval);
+Test7();
+void computeNextState(int *currentState,
+                      vector<double> *currentTimes,
+int *succ, int *reset,
+const int nextSymbol, const double newTime,
+const NumericVector &startInterval,
+const NumericVector &endInterval);
 };
 class Test8: public Automaton {
 public:
-  Test8();
-  void computeNextState(int *currentState,
-                        vector<double> *currentTimes,
-                        int *succ, int *reset,
-                        const int nextSymbol, const double newTime,
-                        const NumericVector &startInterval,
-                        const NumericVector &endInterval);
+Test8();
+void computeNextState(int *currentState,
+                      vector<double> *currentTimes,
+int *succ, int *reset,
+const int nextSymbol, const double newTime,
+const NumericVector &startInterval,
+const NumericVector &endInterval);
 };
 // Helpers
 bool anyEqual(vector<int> v);
@@ -174,9 +178,9 @@ void incrementPermCounter(vector<int>* counter, int base);
 
 // Process Trace Functions
 List processTrace_rcpp(const NumericVector traceTimes,
-                  const IntegerVector traceEvents,
-                  const int alphabetLength,
-                  const IntegerVector intervals,
-                  const int automaton);
+                       const IntegerVector traceEvents,
+const int alphabetLength,
+const IntegerVector intervals,
+const int automaton);
 */
 #endif
