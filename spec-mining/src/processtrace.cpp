@@ -96,6 +96,7 @@ List processTrace_rcpp(const NumericVector traceTimes,
   #ifdef DEBUG
     ofstream debugFile;
     debugFile.open("debugOut.txt");
+    vector<string> permMapStr;
   #endif
   // Fill map
   vector<int> perm (dimCount, 0);
@@ -174,7 +175,8 @@ List processTrace_rcpp(const NumericVector traceTimes,
                             &(reset(permMap[iLoc][x].first)),
                             permMap[iLoc][x].second, iTime);
         #ifdef DEBUG
-              debugFile<<permMap[iLoc][x].first<<",state="
+              debugFile<<fixed<<permMap[iLoc][x].first<<",time="
+                       <<times[permMap[iLoc][x].first][0]<<",state="
                        <<symbols(permMap[iLoc][x].first)<<",succ="
                        <<succ(permMap[iLoc][x].first)<<",reset="
                        <<reset(permMap[iLoc][x].first)<<",dimension="
@@ -194,7 +196,8 @@ List processTrace_rcpp(const NumericVector traceTimes,
                               &(reset(permMap[i][j].first)),
                               dimCount, iTime);
 #ifdef DEBUG
-          debugFile<<permMap[i][j].first<<",state="
+          debugFile<<fixed<<permMap[i][j].first<<",time="
+                   <<times[permMap[i][j].first][0]<<",state="
                    <<symbols(permMap[i][j].first)<<",succ="
                    <<succ(permMap[i][j].first)<<",reset="
                    <<reset(permMap[i][j].first)<<",dimension="

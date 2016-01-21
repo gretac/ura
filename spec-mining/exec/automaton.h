@@ -29,7 +29,7 @@ using namespace std;
 #define CT(x)   if((newTime - (*currentTimes)[x]  > endInterval(x)) || (newTime - (*currentTimes)[x] < startInterval(x))) { \
     (*reset)++;                                                        \
     STATE(foo_start);                                                  \
-    RT                                                                 \
+    (*currentTimes)[x] = newTime;                                                                     \
     return;                                                            \
   }                                                                    \
 

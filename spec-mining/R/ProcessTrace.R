@@ -30,7 +30,7 @@ createTimedAutomaton = function(timedRegEx) {
 #' @return List of two nd-arrays.
 #' Success and Reset are counters values for each alphabet configuration.
 processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
-
+  options("scipen" = 12)
   trlfile<-paste("\"",tempfile("automaton",fileext = ".rl"),"\"", sep = "")
   tcppfile<-tempfile("automaton",fileext = ".cpp")
   tregex<-paste("\"",timedRegEx,"\"",sep = "")
