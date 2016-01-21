@@ -203,7 +203,7 @@ def write_to_file(input, temprl, headerLoc):
 
     f.write("    machine foo;\n\n")
     f.write("    action R { (*reset)++; STATE(foo_start); RT return; }\n")
-    f.write("    action U { (*succ)++;}\n")
+    f.write("    action U { (*succ)++; }\n")
     f.write("    action STEP { STATE(ftargs); return; }\n\n")
 
     create_actions(f, global_clock_counter)
@@ -214,6 +214,7 @@ def write_to_file(input, temprl, headerLoc):
     f.write("}%%\n\n")
 
     f.write("int cs = *currentState, dummy = 0, eof = -1;\n\n")
+    #f.write("std::cerr<<cs<<std::endl;")
     f.write("")
     f.write("%%{\n")
     f.write("    main := " + ragel_expression + "\n")
@@ -226,7 +227,8 @@ def write_to_file(input, temprl, headerLoc):
     f.write("int ParserAutomaton::getStartState() {\n")
     f.write("startState = %%{")
     f.write("    write start;")
-    f.write("}%%\n")
+    f.write("}%%;\n")
+    f.write("return startState;\n")
     f.write("}\n")
 
     f.write("ParserAutomaton::ParserAutomaton() {\n")

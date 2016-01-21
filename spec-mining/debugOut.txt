@@ -1,40 +1,16 @@
-1,succ=0,reset=0,dimension=0,event*=1
-*************************
-2,succ=0,reset=0,dimension=1,event*=1
-*************************
-1,succ=0,reset=0,dimension=2,event=1
-*************************
-2,succ=0,reset=0,dimension=2,event=1
-*************************
+1,state=1,succ=0,reset=0,dimension=0,event*=1
+2,state=0,succ=0,reset=0,dimension=1,event*=1
 ++++++++++++++++++++++++++
                           
-1,succ=0,reset=0,dimension=2,event=2
-*************************
-2,succ=0,reset=0,dimension=2,event=2
-*************************
-1,succ=1,reset=0,dimension=1,event*=2
-*************************
-2,succ=0,reset=0,dimension=0,event*=2
-*************************
+1,state=2,succ=1,reset=0,dimension=1,event*=2
+2,state=1,succ=0,reset=0,dimension=0,event*=2
 ++++++++++++++++++++++++++
                           
-1,succ=1,reset=0,dimension=0,event*=1
-*************************
-2,succ=1,reset=0,dimension=1,event*=1
-*************************
-1,succ=1,reset=0,dimension=2,event=1
-*************************
-2,succ=2,reset=0,dimension=2,event=1
-*************************
+1,state=1,succ=1,reset=0,dimension=0,event*=1
+2,state=2,succ=1,reset=0,dimension=1,event*=1
 ++++++++++++++++++++++++++
                           
-1,succ=1,reset=0,dimension=2,event=2
-*************************
-2,succ=3,reset=0,dimension=2,event=2
-*************************
-1,succ=2,reset=0,dimension=1,event*=2
-*************************
-2,succ=3,reset=0,dimension=0,event*=2
-*************************
+1,state=2,succ=2,reset=0,dimension=1,event*=2
+2,state=1,succ=1,reset=0,dimension=0,event*=2
 ++++++++++++++++++++++++++
                           

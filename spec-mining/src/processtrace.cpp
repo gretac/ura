@@ -92,6 +92,7 @@ List processTrace_rcpp(const NumericVector traceTimes,
   // Initialize map
   // Pair is perm, alpha placement
   vector<vector<pair<int, int> > > permMap (alphabetLength);
+  vector<bool> permCovered(permCount);
   #ifdef DEBUG
     ofstream debugFile;
     debugFile.open("debugOut.txt");
@@ -130,13 +131,13 @@ List processTrace_rcpp(const NumericVector traceTimes,
   int iLoc;
   double iTime;
 
-  for(int i=0; i< traceTimes.length(); i++) {
+  for(int cnt=0; cnt< traceTimes.length(); cnt++) {
 
     // Since trace alphabet seems to start from 1 instead of 0
-    iLoc = traceEvents(i) - 1;
+    iLoc = traceEvents(cnt) - 1;
     // iLoc is the current event
 
-    iTime= traceTimes(i);
+    iTime= traceTimes(cnt);
 
 //     if(iLoc < alphabetLength){
 //       for(int x=0; x < permMap[iLoc].size(); x++) {
@@ -160,36 +161,49 @@ List processTrace_rcpp(const NumericVector traceTimes,
 //   std::cerr<<"*************************"<< std::endl;
 // #endif
 //     }else
+    fill(permCovered.begin(), permCovered.end(), false);
+
+    for(int x=0; x < permMap[iLoc].size(); x++) {
+
+      //Update automata states and 'success/reset' counters
+      //for permutations which contain event marked with `iloc'
+      if(!permCovered[permMap[iLoc][x].first]){
+        a->computeNextState(&(symbols(permMap[iLoc][x].first)),
+                            &(times[permMap[iLoc][x].first]),
+                            &(succ(permMap[iLoc][x].first)),
+                            &(reset(permMap[iLoc][x].first)),
+                            permMap[iLoc][x].second, iTime);
+        #ifdef DEBUG
+              debugFile<<permMap[iLoc][x].first<<",state="
+                       <<symbols(permMap[iLoc][x].first)<<",succ="
+                       <<succ(permMap[iLoc][x].first)<<",reset="
+                       <<reset(permMap[iLoc][x].first)<<",dimension="
+                       <<permMap[iLoc][x].second << ",event*="
+                       <<iLoc+1<< std::endl;
+        #endif
+        permCovered[permMap[iLoc][x].first] = true;
+      }
+    }
+
     for(int i = 0; i < permMap.size(); i++){
       for(int j = 0 ; j < permMap.at(i).size(); j++){
-        if(i == iLoc){
+        if(!permCovered[permMap[i][j].first]){
           a->computeNextState(&(symbols(permMap[i][j].first)),
                               &(times[permMap[i][j].first]),
                               &(succ(permMap[i][j].first)),
                               &(reset(permMap[i][j].first)),
-                              permMap[i][j].second, iTime);
-          #ifdef DEBUG
-            debugFile<<permMap[i][j].first<<",succ="
-                     <<succ(permMap[i][j].first)<<",reset="
-                     <<reset(permMap[i][j].first)<<",dimension="
-                     <<permMap[i][j].second<< ",event*="
-                     <<iLoc+1 << std::endl;
-            debugFile<<"*************************"<< std::endl;
-          #endif
-        }else{
-            a->computeNextState(&(symbols(permMap[i][j].first)),
-                                &(times[permMap[i][j].first]),
-                                &(succ(permMap[i][j].first)),
-                                &(reset(permMap[i][j].first)),
-                                dimCount, iTime);
-            #ifdef DEBUG
-                debugFile<<permMap[i][j].first<<",succ="
-                         <<succ(permMap[i][j].first)<<",reset="
-                         <<reset(permMap[i][j].first)<<",dimension="
-                         <<dimCount<< ",event="
-                         <<iLoc+1 << std::endl;
-                debugFile<<"*************************"<< std::endl;
-            #endif
+                              dimCount, iTime);
+#ifdef DEBUG
+          debugFile<<permMap[i][j].first<<",state="
+                   <<symbols(permMap[i][j].first)<<",succ="
+                   <<succ(permMap[i][j].first)<<",reset="
+                   <<reset(permMap[i][j].first)<<",dimension="
+                   <<dimCount<< ",event="
+                   <<iLoc+1 << std::endl;
+          debugFile<<"*************************"<< std::endl;
+#endif
+
+          permCovered[permMap[i][j].first] = true;
         }
       }
     }
