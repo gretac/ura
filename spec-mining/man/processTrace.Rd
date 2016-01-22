@@ -16,7 +16,7 @@ processTrace(traceTimes, traceEvents, alphabetLength, timedRegEx)
 \item{timedRegEx}{the timed-regular expression template}
 }
 \value{
-List of two nd-arrays.
+a List
 Success and Reset are counters values for each alphabet configuration.
 }
 \description{

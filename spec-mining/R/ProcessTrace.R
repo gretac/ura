@@ -27,7 +27,7 @@ createTimedAutomaton = function(timedRegEx) {
 #' @param traceEvents Integer vector of corresponding events.
 #' @param alphabetLength Integer greater than zero indicating number of unique events.
 #' @param timedRegEx the timed-regular expression template
-#' @return List of two nd-arrays.
+#' @return a List
 #' Success and Reset are counters values for each alphabet configuration.
 processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
   options("scipen" = 12)
@@ -61,4 +61,18 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
   unlink(tcppfile)
   return (list("success"=success,"reset"=reset))
 
+}
+#' Find a set of sequences of traceEvents which match the given timed regular expression
+#' and the required probability threshold
+#'
+#' @param a List returned by processTrace
+#' @param threshold probability to select mined timed-regular expressions
+#' @return List whose elements represent mined events
+
+getMinedSpecifications = function(resultList, threshold = 0.9) {
+  prob = resultList$success / ( resultList$success + resultList$reset)
+  prob[is.nan(prob)] <- 0
+  prob[is.na(prob)] <- 0
+  probBool = apply(prob, 1:2, function(x) x > threshold)
+  return(which(prob == TRUE, arr.ind=TRUE))
 }
