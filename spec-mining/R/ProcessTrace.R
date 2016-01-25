@@ -69,10 +69,11 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
 #' @param threshold probability to select mined timed-regular expressions
 #' @return List whose elements represent mined events
 
-getMinedSpecifications = function(resultList, threshold = 0.9) {
+getMinedSpecifications = function(resultList, confidence = 0.9, support = 1) {
+  resultList$success = apply(resultList$success, 1:2, function(v) if(!is.na(v) && v >= support){return(v)} else{ return(0)})
   prob = resultList$success / ( resultList$success + resultList$reset)
   prob[is.nan(prob)] <- 0
   prob[is.na(prob)] <- 0
-  probBool = apply(prob, 1:2, function(x) x > threshold)
+  probBool = apply(prob, 1:2, function(x) x >= confidence)
   return(which(prob == TRUE, arr.ind=TRUE))
 }
