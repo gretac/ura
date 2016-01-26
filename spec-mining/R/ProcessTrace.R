@@ -82,54 +82,56 @@ runSyntheticExperiment = function(dirPath){
 
   setup ="S1"
   Sys.setenv("PKG_CXXFLAGS"="-std=c++0x")
-  tLengths = seq(from = 2000,to = 10000, by = 2000)
-  uniqEvents = 10
-  noOfTraces = 4
+  tLengths = seq(from = 10000,to = 40000, by = 10000)
+  uniqEvents = 4
+  noOfTraces = 1
   pyscript = "/home/y2joshi/workspace/TRETraceGenerator/test/traceCreate.py"
-  outputFile = file(paste("/home/y2joshi/metrics.txt",sep=""),"w")
-  cat("Number, TraceLength,Time\n",file = outputFile)
+#   outputFile = file(paste("/home/y2joshi/metrics.txt",sep=""),"w")
+#   cat("Number, TraceLength,Time\n",file = outputFile)
   for(tLength in tLengths){
-    gc()
+    print(tLength)
     dirArg = paste("/home/y2joshi/",setup, tLength, sep = "")
+    print(dirArg)
     try(system(paste("python", pyscript, tLength, uniqEvents, noOfTraces,dirArg), ignore.stdout = FALSE))
     traceFiles = list.files(dirArg,pattern = "trace*")
-    print(traceFiles)
-    print(dirArg)
-
-    for(j in 1:2){
-      t1 = proc.time()
+    #print(traceFiles)
+    for(j in 1:1){
+      #t1 = proc.time()
       for(aTrace in traceFiles){
         fullTracePath = paste(dirArg,"/",aTrace,sep="")
-        #print(fullTracePath)
+        print(fullTracePath)
         traceData = read.csv(file=fullTracePath, header=TRUE, sep=",")
         traceEvents = traceData$traceEvents
         traceTimes = traceData$traceTimes
         alphabetLength = uniqEvents
 
-          r1 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0)*).((<0.^(1)*.1>[0,2000]).(^(0)*))+")
+        processTrace(traceTimes, traceEvents, alphabetLength, "(^(0)*).((<0.^(1)*.1>[0,2000]).(^(0)*))+")
   #         r2 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0|1)*>[0,2000]))+")
   #         r3 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0)*>[0,2000]))+")
   #         r4 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(1)*.1.^(0|1)*>[0,2000]))+")
 
-
+#           dlls = getLoadedDLLs()
+#           dllNames = names(dlls)
+#           for(dllIndex in 1:length(dlls)){
+#             if(grepl("sourceCpp",dllNames[dllIndex])){
+#
+#               xName = names(dlls[dllIndex])[1]
+#               print(xName)
+#               dyn.unload(toString(dlls[dllIndex][[xName]][2]))
+#               dlls = getLoadedDLLs()
+#               dllNames = names(dlls)
+#             }
+#           }
       }
-      t2 = proc.time()
-      resultValues = paste(j,tLength,(t2-t1)['elapsed'], sep=",")
-      cat(paste(resultValues, "\n", sep=""),file = outputFile, append = TRUE)
+      #t2 = proc.time()
+      #ts = (t2-t1)['elapsed']
+      resultValues = paste(j,tLength, sep=",")
+      #cat(paste(resultValues, "\n", sep=""),file = outputFile, append = TRUE)
+      print(resultValues)
     }
-    dlls = getLoadedDLLs()
-    dllNames = names(dlls)
-    for(dllIndex in 1:length(dlls)){
-      if(grepl("sourceCpp",dllNames[dllIndex])){
 
-        xName = names(dlls[dllIndex])[1]
-        print(xName)
-        dyn.unload(toString(dlls[dllIndex][[xName]][2]))
-        dlls = getLoadedDLLs()
-        dllNames = names(dlls)
-      }
-    }
-    library(Rcpp)
+    print("132")
+
   }
-  close(outputFile)
+  # close(outputFile)
 }
