@@ -77,3 +77,59 @@ getMinedSpecifications = function(resultList, confidence = 0.9, support = 1) {
   probBool = apply(prob, 1:2, function(x) x >= confidence)
   return(which(prob == TRUE, arr.ind=TRUE))
 }
+runSyntheticExperiment = function(dirPath){
+  #Setup 1
+
+  setup ="S1"
+  Sys.setenv("PKG_CXXFLAGS"="-std=c++0x")
+  tLengths = seq(from = 2000,to = 10000, by = 2000)
+  uniqEvents = 10
+  noOfTraces = 4
+  pyscript = "/home/y2joshi/workspace/TRETraceGenerator/test/traceCreate.py"
+  outputFile = file(paste("/home/y2joshi/metrics.txt",sep=""),"w")
+  cat("Number, TraceLength,Time\n",file = outputFile)
+  for(tLength in tLengths){
+    gc()
+    dirArg = paste("/home/y2joshi/",setup, tLength, sep = "")
+    try(system(paste("python", pyscript, tLength, uniqEvents, noOfTraces,dirArg), ignore.stdout = FALSE))
+    traceFiles = list.files(dirArg,pattern = "trace*")
+    print(traceFiles)
+    print(dirArg)
+
+    for(j in 1:2){
+      t1 = proc.time()
+      for(aTrace in traceFiles){
+        fullTracePath = paste(dirArg,"/",aTrace,sep="")
+        #print(fullTracePath)
+        traceData = read.csv(file=fullTracePath, header=TRUE, sep=",")
+        traceEvents = traceData$traceEvents
+        traceTimes = traceData$traceTimes
+        alphabetLength = uniqEvents
+
+          r1 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0)*).((<0.^(1)*.1>[0,2000]).(^(0)*))+")
+  #         r2 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0|1)*>[0,2000]))+")
+  #         r3 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0)*>[0,2000]))+")
+  #         r4 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(1)*.1.^(0|1)*>[0,2000]))+")
+
+
+      }
+      t2 = proc.time()
+      resultValues = paste(j,tLength,(t2-t1)['elapsed'], sep=",")
+      cat(paste(resultValues, "\n", sep=""),file = outputFile, append = TRUE)
+    }
+    dlls = getLoadedDLLs()
+    dllNames = names(dlls)
+    for(dllIndex in 1:length(dlls)){
+      if(grepl("sourceCpp",dllNames[dllIndex])){
+
+        xName = names(dlls[dllIndex])[1]
+        print(xName)
+        dyn.unload(toString(dlls[dllIndex][[xName]][2]))
+        dlls = getLoadedDLLs()
+        dllNames = names(dlls)
+      }
+    }
+    library(Rcpp)
+  }
+  close(outputFile)
+}
