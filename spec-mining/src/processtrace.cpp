@@ -1,7 +1,8 @@
 #include "automaton.h"
 #include <fstream>
+#include <chrono>
 //#include <iostream>
-
+using namespace std::chrono;
 bool anyEqual(vector<int> v){
 
   sort(v.begin(), v.end());
@@ -131,7 +132,7 @@ List processTrace_rcpp(const NumericVector traceTimes,
 
   int iLoc;
   double iTime;
-
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
   for(int cnt=0; cnt< traceTimes.length(); cnt++) {
 
     // Since trace alphabet seems to start from 1 instead of 0
@@ -215,6 +216,8 @@ List processTrace_rcpp(const NumericVector traceTimes,
       debugFile<<"                          "<< std::endl;
     #endif
   }
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>( t2 - t1 ).count();
   #ifdef DEBUG
     debugFile.close();
   #endif
@@ -223,5 +226,6 @@ List processTrace_rcpp(const NumericVector traceTimes,
   reset.attr("dim") = dims;
 
   return List::create(Rcpp::Named("success") = succ,
-                      Rcpp::Named("reset")   = reset);
+                      Rcpp::Named("reset")   = reset,
+                      Rcpp::Named("time") = duration );
 }

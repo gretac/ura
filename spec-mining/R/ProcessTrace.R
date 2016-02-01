@@ -59,7 +59,7 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
   reset = aperm(result$reset, c(length(dim(result$reset)):1))
   unlink(trlfile)
   unlink(tcppfile)
-  return (list("success"=success,"reset"=reset))
+  return (list("success"=success,"reset"=reset, "time" = result$time))
 
 }
 #' Find a set of sequences of traceEvents which match the given timed regular expression
@@ -79,59 +79,42 @@ getMinedSpecifications = function(resultList, confidence = 0.9, support = 1) {
 }
 runSyntheticExperiment = function(dirPath){
   #Setup 1
-
-  setup ="S1"
   Sys.setenv("PKG_CXXFLAGS"="-std=c++0x")
   tLengths = seq(from = 10000,to = 40000, by = 10000)
   uniqEvents = 4
-  noOfTraces = 1
+  noOfTraces = 2
   pyscript = "/home/y2joshi/workspace/TRETraceGenerator/test/traceCreate.py"
-#   outputFile = file(paste("/home/y2joshi/metrics.txt",sep=""),"w")
-#   cat("Number, TraceLength,Time\n",file = outputFile)
   for(tLength in tLengths){
-    print(tLength)
     dirArg = paste("/home/y2joshi/",setup, tLength, sep = "")
     print(dirArg)
     try(system(paste("python", pyscript, tLength, uniqEvents, noOfTraces,dirArg), ignore.stdout = FALSE))
     traceFiles = list.files(dirArg,pattern = "trace*")
     #print(traceFiles)
-    for(j in 1:1){
-      #t1 = proc.time()
+    for(j in 1:noOfTraces){
+      t1 = proc.time()
       for(aTrace in traceFiles){
-        fullTracePath = paste(dirArg,"/",aTrace,sep="")
-        print(fullTracePath)
-        traceData = read.csv(file=fullTracePath, header=TRUE, sep=",")
-        traceEvents = traceData$traceEvents
-        traceTimes = traceData$traceTimes
-        alphabetLength = uniqEvents
+          fullTracePath = paste(dirArg,"/",aTrace,sep="")
 
-        processTrace(traceTimes, traceEvents, alphabetLength, "(^(0)*).((<0.^(1)*.1>[0,2000]).(^(0)*))+")
-  #         r2 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0|1)*>[0,2000]))+")
-  #         r3 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0)*>[0,2000]))+")
-  #         r4 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(1)*.1.^(0|1)*>[0,2000]))+")
+          traceData = read.csv(file=fullTracePath, header=TRUE, sep=",")
+          traceEvents = traceData$traceEvents
+          traceTimes = traceData$traceTimes
+          alphabetLength = uniqEvents
+#         print(length(traceTimes))
+#         print(length(traceEvents))
+#         print(alphabetLength)
+          print(fullTracePath)
+          processTrace(traceTimes, traceEvents, alphabetLength, "(^(0)*).((<0.^(1)*.1>[0,2000]).(^(0)*))+")
+          print(paste(fullTracePath, " done", sep = ""))
+  #     r2 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0|1)*>[0,2000]))+")
+  #     r3 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0)*>[0,2000]))+")
+  #     r4 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(1)*.1.^(0|1)*>[0,2000]))+")
+        }
+        t2 = proc.time()
 
-#           dlls = getLoadedDLLs()
-#           dllNames = names(dlls)
-#           for(dllIndex in 1:length(dlls)){
-#             if(grepl("sourceCpp",dllNames[dllIndex])){
-#
-#               xName = names(dlls[dllIndex])[1]
-#               print(xName)
-#               dyn.unload(toString(dlls[dllIndex][[xName]][2]))
-#               dlls = getLoadedDLLs()
-#               dllNames = names(dlls)
-#             }
-#           }
-      }
-      #t2 = proc.time()
-      #ts = (t2-t1)['elapsed']
-      resultValues = paste(j,tLength, sep=",")
-      #cat(paste(resultValues, "\n", sep=""),file = outputFile, append = TRUE)
-      print(resultValues)
+#       ts = (t2-t1)['elapsed']
+#       resultValues = paste(j,tLength, sep=",")
+#       cat(paste(resultValues, "\n", sep=""),file = outputFile, append = TRUE)
+#       print(resultValues)
     }
-
-    print("132")
-
   }
-  # close(outputFile)
 }
