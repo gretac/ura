@@ -5,7 +5,9 @@ Version: 0.1
 Date: 2015-07-11
 Author: Yogi Joshi
 Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: Please use  Sys.setenv("PKG_CXXFLAGS"="-std=c++0x") while doing a build using RStudio
+Description: Please use  Sys.setenv("PKG_CXXFLAGS"="-std=c++0x")	
+			 Sys.setenv("PKG_LIBS"="-lrt")
+ 			 while doing a build using RStudio
 License: What license is it under?
 LazyData: TRUE
 Imports:

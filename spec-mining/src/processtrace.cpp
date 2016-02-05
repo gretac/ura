@@ -1,8 +1,9 @@
 #include "automaton.h"
 #include <fstream>
-#include <chrono>
-//#include <iostream>
-using namespace std::chrono;
+#include <stdlib.h>
+#include <time.h>
+#define BILLION 1E9
+
 bool anyEqual(vector<int> v){
 
   sort(v.begin(), v.end());
@@ -40,7 +41,8 @@ void incrementPermCounter(vector<int>* counter, int base){
 List processTrace_rcpp(const NumericVector traceTimes,
                   const IntegerVector traceEvents,
                   const int alphabetLength,
-                  SEXP automaton) {
+                  SEXP automaton,
+                  const int reClass) {
 
     // Instantiate Correct Automaton
   Rcpp::XPtr< Automaton > a(automaton);
@@ -132,7 +134,9 @@ List processTrace_rcpp(const NumericVector traceTimes,
 
   int iLoc;
   double iTime;
-  high_resolution_clock::time_point t1 = high_resolution_clock::now();
+  struct timespec start, stop;
+  clock_gettime( CLOCK_REALTIME, &start);
+
   for(int cnt=0; cnt< traceTimes.length(); cnt++) {
 
     // Since trace alphabet seems to start from 1 instead of 0
@@ -187,27 +191,28 @@ List processTrace_rcpp(const NumericVector traceTimes,
         permCovered[permMap[iLoc][x].first] = true;
       }
     }
-
-    for(int i = 0; i < permMap.size(); i++){
-      for(int j = 0 ; j < permMap.at(i).size(); j++){
-        if(!permCovered[permMap[i][j].first]){
-          a->computeNextState(&(symbols(permMap[i][j].first)),
-                              &(times[permMap[i][j].first]),
-                              &(succ(permMap[i][j].first)),
-                              &(reset(permMap[i][j].first)),
-                              dimCount, iTime);
+    if(reClass != 2){
+      for(int i = 0; i < permMap.size(); i++){
+        for(int j = 0 ; j < permMap.at(i).size(); j++){
+          if(!permCovered[permMap[i][j].first]){
+            a->computeNextState(&(symbols(permMap[i][j].first)),
+                                &(times[permMap[i][j].first]),
+                                &(succ(permMap[i][j].first)),
+                                &(reset(permMap[i][j].first)),
+                                dimCount, iTime);
 #ifdef DEBUG
-          debugFile<<fixed<<permMap[i][j].first<<",time="
-                   <<times[permMap[i][j].first][0]<<",state="
-                   <<symbols(permMap[i][j].first)<<",succ="
-                   <<succ(permMap[i][j].first)<<",reset="
-                   <<reset(permMap[i][j].first)<<",dimension="
-                   <<dimCount<< ",event="
-                   <<iLoc+1 << std::endl;
-          debugFile<<"*************************"<< std::endl;
+            debugFile<<fixed<<permMap[i][j].first<<",time="
+                     <<times[permMap[i][j].first][0]<<",state="
+                     <<symbols(permMap[i][j].first)<<",succ="
+                     <<succ(permMap[i][j].first)<<",reset="
+                     <<reset(permMap[i][j].first)<<",dimension="
+                     <<dimCount<< ",event="
+                     <<iLoc+1 << std::endl;
+            debugFile<<"*************************"<< std::endl;
 #endif
 
-          permCovered[permMap[i][j].first] = true;
+            permCovered[permMap[i][j].first] = true;
+          }
         }
       }
     }
@@ -216,8 +221,11 @@ List processTrace_rcpp(const NumericVector traceTimes,
       debugFile<<"                          "<< std::endl;
     #endif
   }
-  high_resolution_clock::time_point t2 = high_resolution_clock::now();
-  auto duration = duration_cast<milliseconds>( t2 - t1 ).count();
+  clock_gettime( CLOCK_REALTIME, &stop);
+  double accum;
+  accum = ( stop.tv_sec - start.tv_sec )
+    + (double)(( stop.tv_nsec - start.tv_nsec )
+    / BILLION);
   #ifdef DEBUG
     debugFile.close();
   #endif
@@ -227,5 +235,5 @@ List processTrace_rcpp(const NumericVector traceTimes,
 
   return List::create(Rcpp::Named("success") = succ,
                       Rcpp::Named("reset")   = reset,
-                      Rcpp::Named("time") = duration );
+                      Rcpp::Named("time") = accum );
 }

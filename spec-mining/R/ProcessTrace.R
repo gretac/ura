@@ -29,7 +29,7 @@ createTimedAutomaton = function(timedRegEx) {
 #' @param timedRegEx the timed-regular expression template
 #' @return a List
 #' Success and Reset are counters values for each alphabet configuration.
-processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
+processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx, TREClass = 1) {
   options("scipen" = 12)
   trlfile<-paste("\"",tempfile("automaton",fileext = ".rl"),"\"", sep = "")
   tcppfile<-tempfile("automaton",fileext = ".cpp")
@@ -52,7 +52,7 @@ processTrace = function(traceTimes, traceEvents, alphabetLength, timedRegEx) {
   # Extract the automaton
   automatonPtr<-getAutomatonPointer()
 
-  result = processTrace_rcpp(traceTimes, traceEvents, alphabetLength, automatonPtr)
+  result = processTrace_rcpp(traceTimes, traceEvents, alphabetLength, automatonPtr,TREClass)
 
   # Transpose to make indicies more intuitive
   success = aperm(result$success, c(length(dim(result$success)):1))
@@ -75,46 +75,7 @@ getMinedSpecifications = function(resultList, confidence = 0.9, support = 1) {
   prob[is.nan(prob)] <- 0
   prob[is.na(prob)] <- 0
   probBool = apply(prob, 1:2, function(x) x >= confidence)
-  return(which(prob == TRUE, arr.ind=TRUE))
+  specList = which(probBool!= FALSE, arr.ind=TRUE)
+  return(list("treInstances"=specList, "treInstanceCount"=nrow(specList)))
 }
-runSyntheticExperiment = function(dirPath){
-  #Setup 1
-  Sys.setenv("PKG_CXXFLAGS"="-std=c++0x")
-  tLengths = seq(from = 10000,to = 40000, by = 10000)
-  uniqEvents = 4
-  noOfTraces = 2
-  pyscript = "/home/y2joshi/workspace/TRETraceGenerator/test/traceCreate.py"
-  for(tLength in tLengths){
-    dirArg = paste("/home/y2joshi/",setup, tLength, sep = "")
-    print(dirArg)
-    try(system(paste("python", pyscript, tLength, uniqEvents, noOfTraces,dirArg), ignore.stdout = FALSE))
-    traceFiles = list.files(dirArg,pattern = "trace*")
-    #print(traceFiles)
-    for(j in 1:noOfTraces){
-      t1 = proc.time()
-      for(aTrace in traceFiles){
-          fullTracePath = paste(dirArg,"/",aTrace,sep="")
 
-          traceData = read.csv(file=fullTracePath, header=TRUE, sep=",")
-          traceEvents = traceData$traceEvents
-          traceTimes = traceData$traceTimes
-          alphabetLength = uniqEvents
-#         print(length(traceTimes))
-#         print(length(traceEvents))
-#         print(alphabetLength)
-          print(fullTracePath)
-          processTrace(traceTimes, traceEvents, alphabetLength, "(^(0)*).((<0.^(1)*.1>[0,2000]).(^(0)*))+")
-          print(paste(fullTracePath, " done", sep = ""))
-  #     r2 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0|1)*>[0,2000]))+")
-  #     r3 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(0|1)*.1.^(0)*>[0,2000]))+")
-  #     r4 = processTrace(traceTimes, traceEvents, alphabetLength, "(^(0|1)*).((<0.^(1)*.1.^(0|1)*>[0,2000]))+")
-        }
-        t2 = proc.time()
-
-#       ts = (t2-t1)['elapsed']
-#       resultValues = paste(j,tLength, sep=",")
-#       cat(paste(resultValues, "\n", sep=""),file = outputFile, append = TRUE)
-#       print(resultValues)
-    }
-  }
-}
